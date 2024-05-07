@@ -21,11 +21,11 @@ function inputStateReducer(state: InputState, action: Action): InputState {
 }
 
 function useInput(valueValidator: CallableFunction) {
-  function valueChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: 'INPUT', value: event.target.value });
   }
 
-  function inputBlurHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleBlur(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: 'BLUR', value: event.target.value });
   }
 
@@ -36,7 +36,7 @@ function useInput(valueValidator: CallableFunction) {
   const [inputState, dispatch] = useReducer(inputStateReducer, initialInputState);
   const inputError = inputState.isTouched ? valueValidator(inputState.value) : '';
 
-  return [inputState.value, valueChangeHandler, inputBlurHandler, resetHandler, inputError];
+  return [inputState.value, handleValueChange, handleBlur, resetHandler, inputError];
 }
 
 export default useInput;
