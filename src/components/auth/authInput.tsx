@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEventHandler, FocusEventHandler } from 'react';
 
 const UserIconSVG = React.lazy(() => import('./SVG/userIconSVG'));
 const EmailIconSVG = React.lazy(() => import('./SVG/emailIconSVG'));
@@ -8,7 +8,14 @@ const userIconSVG = <UserIconSVG />;
 const emailIconSVG = <EmailIconSVG />;
 const passwordIconSVG = <PasswordIconSVG />;
 
-function Input(props: { type: 'username' | 'email' | 'password' }) {
+function Input(props: {
+  type: 'username' | 'email' | 'password';
+  changeHandler: ChangeEventHandler<HTMLInputElement>;
+  blurHandler: FocusEventHandler<HTMLInputElement>;
+  value: string;
+  hasError: boolean;
+  isTouched: boolean;
+}) {
   let icon;
 
   if (props.type == 'username') {
@@ -28,6 +35,9 @@ function Input(props: { type: 'username' | 'email' | 'password' }) {
         placeholder={'Enter ' + props.type}
         name={props.type}
         id={props.type}
+        value={props.value}
+        onChange={props.changeHandler}
+        onBlur={props.blurHandler}
         className='rounded pl-12 py-2 md:py-4 focus:outline-none w-full ml-5 text-2xl text-gray-700'
       />
     </div>
