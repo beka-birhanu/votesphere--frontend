@@ -3,7 +3,7 @@ import useInput from '../../hooks/use-input';
 import zxcvbn from 'zxcvbn';
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const usernameRegex = /^[a-zA-Z0-9_.]+$/;
+const usernameRegex = /^[a-zA-Z0-9_]+$/;
 const errorIcon = (
   <svg width='24px' height='24px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
@@ -18,7 +18,7 @@ const errorIcon = (
 );
 
 function validateEmail(email: string): string | null {
-  if (email.trim().length === 0) {
+  if (!email || email.trim().length === 0) {
     return 'Email cannot be empty';
   }
   const isCorrect = emailRegex.test(email);
@@ -27,27 +27,32 @@ function validateEmail(email: string): string | null {
 }
 
 function validateUsername(username: string): string | null {
-  if (username.length < 3 || username.length > 20) {
+  if (!username || username.length < 3 || username.length > 20) {
     return 'Username must be between 3 and 20 characters';
   }
 
-  const invalidCharsMatch = username.match(usernameRegex);
-  if (invalidCharsMatch) {
-    const invalidChars = invalidCharsMatch.join(', ');
-    return `username contains invalid characters: ${invalidChars}`;
+  const invalidCharsSet = new Set();
+  for (const char of username) {
+    if (!usernameRegex.test(char)) {
+      invalidCharsSet.add(char);
+    }
+  }
+  const invalidChars = Array.from(invalidCharsSet);
+  if (invalidChars.length > 0) {
+    return `Username contains invalid characters: ${invalidChars.join(', ')}`;
   }
 
   return null;
 }
 
 function validatePassword(password: string): string | null {
-  if (password.length < 8) {
-    return 'password must be at least 8 characters long.';
+  if (!password || password.length < 8) {
+    return 'Password must be at least 8 characters long.';
   }
 
   const passwordStrength = zxcvbn(password).score;
   if (passwordStrength < 3) {
-    return 'weak password! please mix numbers, and special characters.';
+    return 'Weak password! please mix numbers, and special characters.';
   }
 
   return null;
