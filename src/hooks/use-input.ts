@@ -1,8 +1,8 @@
 import { useReducer } from 'react';
 
-const initialInputState = { value: '', isTouched: false };
+const initialInputState = { value: null, isTouched: false };
 interface InputState {
-  value: string;
+  value: string | null;
   isTouched: boolean;
 }
 type Action = { type: 'INPUT' | 'BLUR' | 'RESET'; value: string };
