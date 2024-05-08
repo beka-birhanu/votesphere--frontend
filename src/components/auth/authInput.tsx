@@ -8,6 +8,9 @@ const userIconSVG = <UserIconSVG />;
 const emailIconSVG = <EmailIconSVG />;
 const passwordIconSVG = <PasswordIconSVG />;
 
+const nonErrorStyleClassName = 'border-[1px] border-[#CDCDCD] hover:border-gray-400';
+const errorStyleClassName = 'border-[1px] border-red-400 hover:border-red-400';
+
 function Input(props: {
   type: 'username' | 'email' | 'password';
   changeHandler: ChangeEventHandler<HTMLInputElement>;
@@ -27,7 +30,11 @@ function Input(props: {
   }
 
   return (
-    <div className='flex items-center text-lg border-solid border-[1px] border-[#CDCDCD] rounded-xl shadow-sm'>
+    <div
+      className={`flex items-center text-lg border-solid  rounded-xl shadow-sm ${
+        props.hasError && props.isTouched ? errorStyleClassName : nonErrorStyleClassName
+      }`}
+    >
       {icon}
 
       <input
