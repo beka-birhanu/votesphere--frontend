@@ -57,35 +57,41 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
   const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
     useInput(validatePassword);
 
+  const emailInput = (
+    <Input
+      type='email'
+      changeHandler={setEmail}
+      blurHandler={emailInputBlurHandler}
+      value={email}
+      hasError={emailInputError != ''}
+      isTouched={isEmailInputTouched}
+    ></Input>
+  );
+  const usernameInput = (
+    <Input
+      type='username'
+      changeHandler={setUsername}
+      blurHandler={usernameInputBlurHandler}
+      value={username}
+      hasError={usernameInputError != ''}
+      isTouched={isUsernameInputTouched}
+    ></Input>
+  );
+  const passwordInput = (
+    <Input
+      type='password'
+      changeHandler={setPassword}
+      blurHandler={passwordInputBlurHandler}
+      value={password}
+      hasError={passwordInputError != ''}
+      isTouched={isPasswordInputTouched}
+    ></Input>
+  );
+
   return (
     <form className='flex flex-col justify-stretch gap-16'>
       <div className='flex flex-col justify-stretch sm:p-12 p-2'>
-        {props.type === 'sign up' && (
-          <Input
-            type='email'
-            changeHandler={setEmail}
-            blurHandler={emailInputBlurHandler}
-            value={email}
-            hasError={emailInputError != ''}
-            isTouched={isEmailInputTouched}
-          ></Input>
-        )}
-        <Input
-          type='username'
-          changeHandler={setUsername}
-          blurHandler={usernameInputBlurHandler}
-          value={username}
-          hasError={usernameInputError != ''}
-          isTouched={isUsernameInputTouched}
-        ></Input>
-        <Input
-          type='password'
-          changeHandler={setPassword}
-          blurHandler={passwordInputBlurHandler}
-          value={password}
-          hasError={passwordInputError != ''}
-          isTouched={isPasswordInputTouched}
-        ></Input>
+        {props.type === 'sign up' && emailInput} {usernameInput} {passwordInput}
       </div>
       <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl'>Login</button>
     </form>
