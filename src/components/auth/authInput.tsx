@@ -27,7 +27,7 @@ function Input(props: {
   }
 
   return (
-    <div className='flex items-center text-lg mb-6 md:mb-8 border-solid border-[1px] border-[#CDCDCD] rounded-xl shadow-sm'>
+    <div className='flex items-center text-lg border-solid border-[1px] border-[#CDCDCD] rounded-xl shadow-sm'>
       {icon}
 
       <input
