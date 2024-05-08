@@ -2,7 +2,7 @@ import Input from './authInput';
 import useInput from '../../hooks/use-input';
 import zxcvbn from 'zxcvbn';
 
-const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const usernameRegex = /^[a-zA-Z0-9_.]+$/;
 const errorIcon = (
   <svg width='24px' height='24px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -18,9 +18,12 @@ const errorIcon = (
 );
 
 function validateEmail(email: string): string | null {
-  const hasError = emailRegex.test(email);
+  if (email.trim().length === 0) {
+    return 'Email cannot be empty';
+  }
+  const isCorrect = emailRegex.test(email);
 
-  return hasError ? 'Invalid email format' : null;
+  return isCorrect ? null : 'Invalid email format';
 }
 
 function validateUsername(username: string): string | null {
