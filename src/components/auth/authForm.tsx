@@ -72,7 +72,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
         changeHandler={setEmail}
         blurHandler={emailInputBlurHandler}
         value={email}
-        hasError={emailInputError !== ''}
+        hasError={emailInputError !== null}
         isTouched={isEmailInputTouched}
       ></Input>
       {emailInputError !== null && (
@@ -90,7 +90,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
         changeHandler={setUsername}
         blurHandler={usernameInputBlurHandler}
         value={username}
-        hasError={usernameInputError !== ''}
+        hasError={usernameInputError !== null}
         isTouched={isUsernameInputTouched}
       ></Input>
 
@@ -109,7 +109,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
         changeHandler={setPassword}
         blurHandler={passwordInputBlurHandler}
         value={password}
-        hasError={passwordInputError !== ''}
+        hasError={passwordInputError !== null}
         isTouched={isPasswordInputTouched}
       ></Input>
 
