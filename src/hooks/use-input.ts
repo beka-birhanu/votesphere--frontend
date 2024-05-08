@@ -34,7 +34,7 @@ function useInput(valueValidator: CallableFunction) {
   }
 
   const [inputState, dispatch] = useReducer(inputStateReducer, initialInputState);
-  const inputError = inputState.isTouched ? valueValidator(inputState.value) : '';
+  const inputError = inputState.isTouched ? valueValidator(inputState.value) : null;
 
   return [inputState.value, inputState.isTouched, inputError, handleValueChange, handleBlur, resetHandler];
 }
