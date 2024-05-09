@@ -32,8 +32,10 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
   const [formHasError, setFromHasError] = useState(true);
 
   useEffect(() => {
-    setFromHasError(emailInputError !== null || usernameInputError !== null || passwordInputError !== null);
-  }, [emailInputError, usernameInputError, passwordInputError]);
+    const atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
+    const atLeastOneEmpty = email === null || username === null || password === null;
+    setFromHasError(atLeastOneEmpty || atLeastOneError);
+  }, [emailInputError, usernameInputError, passwordInputError, email, username, password]);
 
   function submitHandler(event: React.FormEvent<HTMLFormElement>): null {
     event.preventDefault();
@@ -104,7 +106,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
 
   console.log(formHasError);
   return (
-    <form className='flex flex-col justify-stretch gap-16'>
+    <form className='flex flex-col justify-stretch gap-16' onSubmit={submitHandler}>
       <div className='flex flex-col justify-stretch sm:p-12 p-2'>
         {props.type === 'sign up' && emailInputWithError} {usernameInputWithError} {passwordInputWithError}
       </div>
