@@ -1,6 +1,7 @@
 import Input from './authInput';
 import useInput from '../../hooks/use-input';
 import { validateEmail, validatePassword, validateUsername } from './validators';
+import { useEffect, useState } from 'react';
 
 const errorIcon = (
   <svg width='12px' height='12px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -15,12 +16,34 @@ const errorIcon = (
   </svg>
 );
 
+function submit(formData: { email: string; username: string; password: string }): null | string[] {
+  // hit API
+  const errors = ['ksld'];
+  return errors;
+}
+
 function AuthForm(props: { type: 'login' | 'sign up' }) {
   const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
   const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
     useInput(validateUsername);
   const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
     useInput(validatePassword);
+
+  const [formHasError, setFromHasError] = useState(true);
+
+  useEffect(() => {
+    setFromHasError(emailInputError !== null || usernameInputError !== null || passwordInputError !== null);
+  }, [emailInputError, usernameInputError, passwordInputError]);
+
+  function submitHandler(event: React.FormEvent<HTMLFormElement>): null {
+    event.preventDefault();
+    if (formHasError) {
+      return null;
+    }
+    const formData = { email: email, username: username, password: password };
+    const errors = submit(formData);
+    return null;
+  }
 
   const emailInputWithError = (
     <div className='flex flex-col gap-2 mb-6 md:mb-8'>
@@ -79,12 +102,15 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
     </div>
   );
 
+  console.log(formHasError);
   return (
     <form className='flex flex-col justify-stretch gap-16'>
       <div className='flex flex-col justify-stretch sm:p-12 p-2'>
         {props.type === 'sign up' && emailInputWithError} {usernameInputWithError} {passwordInputWithError}
       </div>
-      <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl'>Login</button>
+      <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500' disabled={formHasError}>
+        Login
+      </button>
     </form>
   );
 }
