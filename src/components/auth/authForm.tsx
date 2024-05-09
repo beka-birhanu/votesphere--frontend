@@ -2,6 +2,7 @@ import Input from './authInput';
 import useInput from '../../hooks/use-input';
 import { validateEmail, validatePassword, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
+import RadioButton from './authRadioButton';
 
 const errorIcon = (
   <svg width='12px' height='12px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -28,16 +29,17 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
     useInput(validateUsername);
   const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
     useInput(validatePassword);
+  const [role, setRole] = useState(null);
 
   const [formHasError, setFromHasError] = useState(true);
 
   useEffect(() => {
     const atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
-    const atLeastOneEmpty = email === null || username === null || password === null;
+    const atLeastOneEmpty = email === null || username === null || password === null || role === null;
     setFromHasError(atLeastOneEmpty || atLeastOneError);
-  }, [emailInputError, usernameInputError, passwordInputError, email, username, password]);
+  }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
-  function submitHandler(event: React.FormEvent<HTMLFormElement>): null {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): null {
     event.preventDefault();
     if (formHasError) {
       return null;
@@ -104,11 +106,11 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
     </div>
   );
 
-  console.log(formHasError);
   return (
-    <form className='flex flex-col justify-stretch gap-16' onSubmit={submitHandler}>
+    <form className='flex flex-col justify-stretch gap-16' onSubmit={handleSubmit}>
       <div className='flex flex-col justify-stretch sm:p-12 p-2'>
         {props.type === 'sign up' && emailInputWithError} {usernameInputWithError} {passwordInputWithError}
+        {<RadioButton onSelect={setRole} options={['User', 'Admin']}></RadioButton>}
       </div>
       <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500' disabled={formHasError}>
         Login
