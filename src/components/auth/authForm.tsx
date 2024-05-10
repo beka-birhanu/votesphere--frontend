@@ -3,12 +3,7 @@ import useInput from '../../hooks/use-input';
 import { validateEmail, validatePassword, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
 import DropDown from './authDropDown';
-
-function submit(formData: { email: string; username: string; password: string }): null | string[] {
-  // hit API
-  const errors = ['ksld'];
-  return errors;
-}
+import { handleSignUpSubmit } from './authFormSubmitHandlers';
 
 function AuthForm(props: { type: 'login' | 'sign up' }) {
   const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
@@ -19,21 +14,20 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
   const [role, setRole] = useState(null);
 
   const [formHasError, setFromHasError] = useState(true);
+  const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null });
 
   useEffect(() => {
     const atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
     const atLeastOneEmpty = email === null || username === null || password === null || role === null;
     setFromHasError(atLeastOneEmpty || atLeastOneError);
+    setSubmitError({ emailError: null, usernameError: null, serverError: null });
   }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): null {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (formHasError) {
-      return null;
-    }
-    const formData = { email: email, username: username, password: password };
-    const errors = submit(formData);
-    return null;
+
+    const formData = { email: email, username: username, password: password, role: role };
+    handleSignUpSubmit(formData, setSubmitError);
   }
 
   const emailInputField = (
@@ -42,7 +36,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
       changeHandler={setEmail}
       blurHandler={emailInputBlurHandler}
       value={email}
-      error={emailInputError}
+      error={emailInputError ? emailInputError : submitError.emailError}
       isTouched={isEmailInputTouched}
     ></Input>
   );
@@ -53,7 +47,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
       changeHandler={setUsername}
       blurHandler={usernameInputBlurHandler}
       value={username}
-      error={usernameInputError}
+      error={usernameInputError ? usernameInputError : submitError.usernameError}
       isTouched={isUsernameInputTouched}
     ></Input>
   );
