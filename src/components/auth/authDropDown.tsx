@@ -1,4 +1,4 @@
-function RadioButton(props: { onSelect: CallableFunction; options: string[] }) {
+function DropDown(props: { onSelect: CallableFunction; options: string[] }) {
   function handleSelection(event: React.ChangeEvent<HTMLSelectElement>) {
     props.onSelect(event.target.value);
   }
@@ -23,4 +23,4 @@ function RadioButton(props: { onSelect: CallableFunction; options: string[] }) {
     </div>
   );
 }
-export default RadioButton;
+export default DropDown;

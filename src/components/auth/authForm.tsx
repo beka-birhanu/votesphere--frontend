@@ -2,7 +2,7 @@ import Input from './authInput';
 import useInput from '../../hooks/use-input';
 import { validateEmail, validatePassword, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
-import RadioButton from './authRadioButton';
+import DropDown from './authDropDown';
 
 function submit(formData: { email: string; username: string; password: string }): null | string[] {
   // hit API
@@ -73,10 +73,10 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
     <form className='flex flex-col justify-stretch gap-16' onSubmit={handleSubmit}>
       <div className='flex flex-col justify-stretch sm:p-12 p-2'>
         {props.type === 'sign up' && emailInputField} {usernameInputField} {passwordInputField}
-        {<RadioButton onSelect={setRole} options={['User', 'Admin']}></RadioButton>}
+        {<DropDown onSelect={setRole} options={['User', 'Admin']}></DropDown>}
       </div>
       <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500' disabled={formHasError}>
-        Login
+        {props.type}
       </button>
     </form>
   );
