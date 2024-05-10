@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import DropDown from './authDropDown';
 import { handleSignUpSubmit } from './authFormSubmitHandlers';
 
-function AuthForm(props: { type: 'login' | 'sign up' }) {
+function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunction }) {
     const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
     const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
         useInput(validateUsername);
@@ -27,7 +27,7 @@ function AuthForm(props: { type: 'login' | 'sign up' }) {
         event.preventDefault();
 
         const formData = { email: email, username: username, password: password, role: role };
-        handleSignUpSubmit(formData, setSubmitError);
+        handleSignUpSubmit(formData, setSubmitError, props.setIsLoading);
     }
 
     const emailInputField = (

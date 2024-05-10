@@ -18,19 +18,24 @@ type errorDetail = {
     serverError: null | string;
 };
 
-async function sendData(formData: {
-    email: string;
-    username: string;
-    password: string;
-    role: string | null;
-}): Promise<{ isSuccess: boolean; data: successfulResponse | conflictResponse } | null> {
+async function sendData(
+    formData: {
+        email: string;
+        username: string;
+        password: string;
+        role: string | null;
+    },
+    setIsLoading: CallableFunction,
+): Promise<{ isSuccess: boolean; data: successfulResponse | conflictResponse } | null> {
     try {
+        setIsLoading(true);
         const response = await fetch('http://localhost:9000/auth/signup', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(formData),
         });
 
+        setIsLoading(false);
         if (response.ok) {
             const successData: successfulResponse = await response.json();
             return { isSuccess: true, data: successData };
@@ -40,6 +45,7 @@ async function sendData(formData: {
         }
     } catch (error: any) {
         console.log(error.message);
+        setIsLoading(false);
         return null;
     }
 }
@@ -47,8 +53,9 @@ async function sendData(formData: {
 export async function handleSignUpSubmit(
     formData: { email: string; username: string; password: string; role: string | null },
     setSubmitError: CallableFunction,
+    setIsLoading: CallableFunction,
 ) {
-    const response = await sendData(formData);
+    const response = await sendData(formData, setIsLoading);
     const errorDetails: errorDetail = { emailError: null, usernameError: null, serverError: null };
 
     if (!response) {
