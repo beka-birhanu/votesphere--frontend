@@ -1,33 +1,71 @@
 import Input from './authInput';
 import useInput from '../../hooks/use-input';
-import { validateEmail, validatePassword, validateUsername } from './validators';
+import { validateEmail, validatePasswordForSignUp, validatePasswordForSignIn, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
 import DropDown from './authDropDown';
-import { handleSignUpSubmit } from './authFormSubmitHandlers';
+import { handleSignInSubmit, handleSignUpSubmit, signUpFromData } from './authFormSubmitHandlers';
+
+type formErrors = {
+    emailInputError: null | string;
+    usernameInputError: null | string;
+    passwordInputError: null | string;
+};
+
+function checkFromValidity(formType: string, formData: signUpFromData, formErrors: formErrors): boolean | undefined {
+    const { email, username, password, role } = formData;
+    const { emailInputError, usernameInputError, passwordInputError } = formErrors;
+    let atLeastOneError;
+    let atLeastOneEmpty;
+
+    if (formType === 'sign up') {
+        atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
+        atLeastOneEmpty =
+            email === null ||
+            email === '' ||
+            username === null ||
+            username === '' ||
+            password === null ||
+            password === '' ||
+            role === null ||
+            role == '';
+    } else if (formType === 'login') {
+        atLeastOneError = usernameInputError !== null || passwordInputError !== null;
+        atLeastOneEmpty = username === null || username === '' || password === null || password === '';
+    }
+    return (atLeastOneEmpty || atLeastOneError) === false;
+}
 
 function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunction }) {
     const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
     const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
         useInput(validateUsername);
-    const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
-        useInput(validatePassword);
+    const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] = useInput(
+        props.type === 'sign up' ? validatePasswordForSignUp : validatePasswordForSignIn,
+    );
     const [role, setRole] = useState(null);
 
     const [formHasError, setFromHasError] = useState(true);
     const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null });
 
     useEffect(() => {
-        const atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
-        const atLeastOneEmpty = email === null || username === null || password === null || role === null;
-        setFromHasError(atLeastOneEmpty || atLeastOneError);
+        const formData = { email, username, password, role };
+        const formErrors = { emailInputError, usernameInputError, passwordInputError };
+        const isValid = checkFromValidity(props.type, formData, formErrors);
+
+        setFromHasError(!isValid);
         setSubmitError({ emailError: null, usernameError: null, serverError: null });
     }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const formData = { email: email, username: username, password: password, role: role };
-        handleSignUpSubmit(formData, setSubmitError, props.setIsLoading);
+        const formData = { email, username, password, role };
+
+        if (props.type === 'sign up') {
+            handleSignUpSubmit(formData, setSubmitError, props.setIsLoading);
+        } else {
+            handleSignInSubmit(formData, setSubmitError, props.setIsLoading);
+        }
     }
 
     const emailInputField = (
@@ -67,7 +105,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         <form className='flex flex-col justify-stretch gap-16' onSubmit={handleSubmit}>
             <div className='flex flex-col justify-stretch sm:p-12 p-2'>
                 {props.type === 'sign up' && emailInputField} {usernameInputField} {passwordInputField}
-                {<DropDown onSelect={setRole} options={['User', 'Admin']}></DropDown>}
+                {props.type === 'sign up' && <DropDown onSelect={setRole} options={['User', 'Admin']}></DropDown>}
             </div>
             <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500' disabled={formHasError}>
                 {props.type}
