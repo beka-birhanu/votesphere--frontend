@@ -12,12 +12,8 @@ type errorResponse = {
     statusCode: number;
 };
 
-type signUpErrorDetail = {
+type errorDetail = {
     emailError: null | string;
-    usernameError: null | string;
-    serverError: null | string;
-};
-type signInErrorDetail = {
     passwordError: null | string;
     usernameError: null | string;
     serverError: null | string;
@@ -62,7 +58,7 @@ async function sendData(
 export async function handleSignUpSubmit(formData: signUpFromData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
     const url = 'http://localhost:9000/auth/signup';
     const response = await sendData(url, formData, setIsLoading);
-    const errorDetails: signUpErrorDetail = { emailError: null, usernameError: null, serverError: null };
+    const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
     if (!response) {
         errorDetails.serverError = 'Server Error';
@@ -82,9 +78,9 @@ export async function handleSignUpSubmit(formData: signUpFromData, setSubmitErro
 }
 
 export async function handleSignInSubmit(formData: signInFromData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
-    const url = 'http://localhost:9000/auth/login';
+    const url = 'http://localhost:9000/auth/signin';
     const response = await sendData(url, formData, setIsLoading);
-    const errorDetails: signInErrorDetail = { passwordError: null, usernameError: null, serverError: null };
+    const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
     if (!response) {
         errorDetails.serverError = 'Server Error';
