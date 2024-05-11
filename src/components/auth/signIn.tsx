@@ -8,7 +8,7 @@ function Login() {
 
     return (
         <Fragment>
-            <Header isAuthorized={true} isLoading={isLoading}></Header>
+            <Header isAuthorized={false} isLoading={isLoading}></Header>
             <div className='flex items-center min-h-[90vh] justify-center text-2xl'>
                 <div className='max-w-3xl w-full rounded-xl sm:p-12 p-2 grid gap-16 sm:border-solid sm:border-[1px] sm:border-[#CDCDCD]'>
                     <hgroup>
