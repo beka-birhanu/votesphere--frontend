@@ -45,7 +45,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const [role, setRole] = useState(null);
 
     const [formHasError, setFromHasError] = useState(true);
-    const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null });
+    const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null, passwordError: null });
 
     useEffect(() => {
         const formData = { email, username, password, role };
@@ -53,7 +53,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         const isValid = checkFromValidity(props.type, formData, formErrors);
 
         setFromHasError(!isValid);
-        setSubmitError({ emailError: null, usernameError: null, serverError: null });
+        setSubmitError({ emailError: null, usernameError: null, serverError: null, passwordError: null });
     }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -67,7 +67,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
             handleSignInSubmit(formData, setSubmitError, props.setIsLoading);
         }
     }
-
+    console.log(submitError);
     const emailInputField = (
         <Input
             type='email'
@@ -96,7 +96,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
             changeHandler={setPassword}
             blurHandler={passwordInputBlurHandler}
             value={password}
-            error={passwordInputError}
+            error={passwordInputError ? usernameInputError : submitError.passwordError}
             isTouched={isPasswordInputTouched}
         ></Input>
     );
