@@ -1,4 +1,4 @@
-type successfulResponse = {
+type successResponse = {
     username: string;
     role: string;
     groupID: null;
@@ -6,30 +6,39 @@ type successfulResponse = {
     refreshToken: string;
 };
 
-type conflictResponse = {
+type errorResponse = {
     message: string;
     error: string;
     statusCode: number;
 };
 
-type errorDetail = {
+type signUpErrorDetail = {
     emailError: null | string;
     usernameError: null | string;
     serverError: null | string;
 };
+type signInErrorDetail = {
+    passwordError: null | string;
+    usernameError: null | string;
+    serverError: null | string;
+};
+
+export type signUpFromData = {
+    email: string;
+    username: string;
+    password: string;
+    role: string | null;
+};
+export type signInFromData = { username: string; password: string };
 
 async function sendData(
-    formData: {
-        email: string;
-        username: string;
-        password: string;
-        role: string | null;
-    },
+    url: string,
+    formData: signInFromData | signUpFromData,
     setIsLoading: CallableFunction,
-): Promise<{ isSuccess: boolean; data: successfulResponse | conflictResponse } | null> {
+): Promise<{ isSuccess: boolean; data: successResponse | errorResponse } | null> {
     try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:9000/auth/signup', {
+        const response = await fetch(url, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(formData),
@@ -37,10 +46,10 @@ async function sendData(
 
         setIsLoading(false);
         if (response.ok) {
-            const successData: successfulResponse = await response.json();
+            const successData: successResponse = await response.json();
             return { isSuccess: true, data: successData };
         } else {
-            const errorData: conflictResponse = await response.json();
+            const errorData: errorResponse = await response.json();
             return { isSuccess: false, data: errorData };
         }
     } catch (error: any) {
@@ -50,13 +59,10 @@ async function sendData(
     }
 }
 
-export async function handleSignUpSubmit(
-    formData: { email: string; username: string; password: string; role: string | null },
-    setSubmitError: CallableFunction,
-    setIsLoading: CallableFunction,
-) {
-    const response = await sendData(formData, setIsLoading);
-    const errorDetails: errorDetail = { emailError: null, usernameError: null, serverError: null };
+export async function handleSignUpSubmit(formData: signUpFromData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
+    const url = 'http://localhost:9000/auth/signup';
+    const response = await sendData(url, formData, setIsLoading);
+    const errorDetails: signUpErrorDetail = { emailError: null, usernameError: null, serverError: null };
 
     if (!response) {
         errorDetails.serverError = 'Server Error';
@@ -69,6 +75,28 @@ export async function handleSignUpSubmit(
             errorDetails.usernameError = errorMessage;
         } else {
             errorDetails.emailError = errorMessage;
+        }
+    }
+
+    setSubmitError(errorDetails);
+}
+
+export async function handleSignInSubmit(formData: signInFromData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
+    const url = 'http://localhost:9000/auth/login';
+    const response = await sendData(url, formData, setIsLoading);
+    const errorDetails: signInErrorDetail = { passwordError: null, usernameError: null, serverError: null };
+
+    if (!response) {
+        errorDetails.serverError = 'Server Error';
+    } else if (response.isSuccess) {
+        localStorage.setItem('loginData', JSON.stringify(response.data));
+    } else if (response.data && 'message' in response.data) {
+        const errorMessage = response.data.message;
+
+        if (errorMessage.includes('username')) {
+            errorDetails.usernameError = errorMessage;
+        } else {
+            errorDetails.passwordError = errorMessage;
         }
     }
 
