@@ -31,7 +31,7 @@ export function validateUsername(username: string): string | null {
     return null;
 }
 
-export function validatePassword(password: string): string | null {
+export function validatePasswordForSignUp(password: string): string | null {
     if (!password || password.length < 8) {
         return 'Password must be at least 8 characters long.';
     }
@@ -41,5 +41,12 @@ export function validatePassword(password: string): string | null {
         return 'Weak password! please mix numbers, and special characters.';
     }
 
+    return null;
+}
+
+export function validatePasswordForSignIn(password: string): string | null {
+    if (!password || password.length < 8) {
+        return 'Password must be at least 8 characters long.';
+    }
     return null;
 }
