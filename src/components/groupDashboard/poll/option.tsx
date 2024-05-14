@@ -10,6 +10,9 @@ const chosenMark = (
 const chooseButton = <div className='w-6 h-6 rounded-full border-2'></div>;
 
 function PollOption(props: { data: optionData; displayVotePercent: boolean; isChosen: boolean }) {
+    const barWidth = Math.round(props.data.votePercent);
+    const votePercentBar = <div style={{ width: `${barWidth}%` }} className='h-[5px] bg-blue-500 rounded-full ml-1`} ' />;
+
     return (
         <div className={`flex gap-3 ${props.displayVotePercent ? 'items-start' : 'items-center'} w-full`}>
             <div className='flex flex-col gap-0 justify-end items-end w-[4.5rem]'>
@@ -20,7 +23,7 @@ function PollOption(props: { data: optionData; displayVotePercent: boolean; isCh
 
             <div className='flex flex-col gap-1 p-1 w-full'>
                 <p>{props.data.optionText}</p>
-                {props.displayVotePercent && <div className={`w-[${Math.round(props.data.votePercent)}%] h-[5px] bg-blue-500 rounded-full ml-1`} />}
+                {props.displayVotePercent && votePercentBar}
             </div>
         </div>
     );
