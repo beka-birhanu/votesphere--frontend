@@ -2,6 +2,7 @@ import { Fragment } from 'react/jsx-runtime';
 import Poll, { pollData } from './poll/poll';
 import { memberData } from './members/membersListItem';
 import MembersList from './members/membersList';
+import Header from '../header/header';
 
 const doubleArrowIcon = (
     <svg
@@ -38,6 +39,7 @@ function DashBoard() {
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],
             hasVoted: false,
+            isClosed: false,
         },
 
         {
@@ -50,6 +52,7 @@ function DashBoard() {
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],
             hasVoted: false,
+            isClosed: true,
         },
 
         {
@@ -62,6 +65,7 @@ function DashBoard() {
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],
             hasVoted: true,
+            isClosed: false,
         },
     ];
     const members: memberData[] = [
@@ -99,25 +103,28 @@ function DashBoard() {
 
     return (
         <Fragment>
-            <hgroup className='flex flex-col gap-6 items-center md:mb-16 mb-10'>
-                <h1 className='text-blue-700 font-bold text-3xl uppercase'>{gorupName}</h1>
-                <p className='uppercase tracking-widest text-sm'>{motto}</p>
-            </hgroup>
+            <Header isAuthorized={true} isLoading={false}></Header>
+            <main className='mt-32'>
+                <hgroup className='flex flex-col gap-6 items-center md:mb-16 mb-10'>
+                    <h1 className='text-blue-700 font-bold text-3xl uppercase'>{gorupName}</h1>
+                    <p className='uppercase tracking-widest text-sm'>{motto}</p>
+                </hgroup>
 
-            <div className='flex items-start min-w-96 w-full relative text-2xl'>
-                <div className='flex items-start min-w-96 w-full relative'>
-                    <section className='flex flex-col items-center justify-center gap-5 w-full '>
-                        {pollsData.map((pollData) => Poll(pollData))}
-                    </section>
-                </div>
-                <aside className='min-w-72 lg:relative lg:z-0 absolute z-50 bg-white right-0 lg:mr-16'>
-                    <div className='flex items-center gap-2 ml-3'>
-                        <button className='flex gap-0'>{doubleArrowIcon}</button>
-                        <h1>Members</h1>
+                <div className='flex items-start min-w-96 w-full relative text-2xl'>
+                    <div className='flex items-start min-w-96 w-full relative'>
+                        <section className='flex flex-col items-center justify-center gap-5 w-full '>
+                            {pollsData.map((pollData) => Poll(pollData))}
+                        </section>
                     </div>
-                    {<MembersList members={members}></MembersList>}
-                </aside>
-            </div>
+                    <aside className='min-w-72 absolute z-50 bg-white right-0 lg:mr-16'>
+                        <div className='flex items-center gap-2 ml-3'>
+                            <button className='flex gap-0'>{doubleArrowIcon}</button>
+                            <h1>Members</h1>
+                        </div>
+                        {<MembersList members={members}></MembersList>}
+                    </aside>
+                </div>
+            </main>
         </Fragment>
     );
 }
