@@ -15,22 +15,34 @@ function Poll(props: pollData) {
         setIsAccordionOpen((isOpen) => !isOpen);
     }
 
+    const [hasVoted, setHasVoted] = useState(props.hasVoted);
+    const [isClosed, setIsClosed] = useState(props.isClosed);
+    const [optionsData, setOptionsData] = useState(props.options);
+    const [chosenOptionId, setChosenOptionId] = useState(props.chosenOptionId);
+
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-    const iconColor = props.hasVoted || props.isClosed ? 'bg-[#ABACAD]' : 'bg-blue-700';
+    const iconColor = hasVoted || isClosed ? 'bg-[#ABACAD]' : 'bg-blue-700';
+
     const totalVoteCount = props.options.reduce((accumulator, option) => accumulator + option.voteCount, 0);
-    const optionsWithPercent = props.options.map((option) => ({
+    const optionsWithPercent = optionsData.map((option) => ({
         id: option.id,
         optionText: option.optionText,
         votePercent: (option.voteCount / totalVoteCount) * 100,
     }));
+
     const question = <h1 className='font-medium mx-2'>{props.question}</h1>;
     const options = optionsWithPercent.map((optionData) => (
         <PollOption
             data={optionData}
-            displayVotePercent={props.hasVoted || props.isClosed}
-            isChosen={props.chosenOptionId === optionData.id}
+            displayVotePercent={hasVoted || isClosed}
+            isChosen={chosenOptionId === optionData.id}
+            setHasVoted={setHasVoted}
+            setIsClosed={setIsClosed}
+            setOptionsData={setOptionsData}
+            setChosenOptionId={setChosenOptionId}
         ></PollOption>
     ));
+
     const iconDirection = isAccordionOpen ? -90 : 90;
     const toggleAccordionIcon = (
         <button>

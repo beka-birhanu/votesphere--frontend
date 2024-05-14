@@ -34,7 +34,7 @@ function DashBoard() {
             chosenOptionId: 'lkksjfd;',
             question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
             options: [
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
+                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
                 { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],
@@ -43,11 +43,11 @@ function DashBoard() {
         },
 
         {
-            id: 'lskdl;flas;0',
+            id: 'lskdl;flas;1',
             chosenOptionId: 'lkksjfd;',
             question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
             options: [
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
+                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
                 { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],
@@ -56,11 +56,11 @@ function DashBoard() {
         },
 
         {
-            id: 'lskdl;flas;0',
+            id: 'lskdl;flas;02',
             chosenOptionId: 'lkksjfd;',
             question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
             options: [
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
+                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
                 { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
                 { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
             ],

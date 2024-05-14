@@ -1,5 +1,3 @@
-import { Fragment } from 'react/jsx-runtime';
-
 type optionData = { id: string; optionText: string; votePercent: number };
 
 const chosenMark = (
@@ -7,14 +5,31 @@ const chosenMark = (
         <p className='text-blue-50 pt-[1px] font-extrabold text-sm'>&#x2713;</p>
     </div>
 );
-const chooseButton = <div className='w-6 h-6 rounded-full border-2'></div>;
 
-function PollOption(props: { data: optionData; displayVotePercent: boolean; isChosen: boolean }) {
+function PollOption(props: {
+    data: optionData;
+    displayVotePercent: boolean;
+    isChosen: boolean;
+    setHasVoted: CallableFunction;
+    setIsClosed: CallableFunction;
+    setOptionsData: CallableFunction;
+    setChosenOptionId: CallableFunction;
+}) {
+    const chooseButton = <div className='w-6 h-6 rounded-full border-2' onClick={handleVote}></div>;
     const barWidth = Math.round(props.data.votePercent);
     const votePercentBar = <div style={{ width: `${barWidth}%` }} className='h-[5px] bg-blue-500 rounded-full ml-1`} ' />;
 
+    function handleVote(event: React.MouseEvent<HTMLElement>) {
+        // hit API
+        props.setHasVoted(true);
+        props.setIsClosed(false);
+        // setOptionData()
+        props.setChosenOptionId(props.data.id);
+        console.log(props.data.optionText);
+    }
+
     return (
-        <div className={`flex gap-3 ${props.displayVotePercent ? 'items-start' : 'items-center'} w-full`}>
+        <div id={props.data.id} className={`flex gap-3 ${props.displayVotePercent ? 'items-start' : 'items-center'} w-full`}>
             <div className='flex flex-col gap-0 justify-end items-end w-[4.5rem]'>
                 {!props.displayVotePercent && chooseButton}
                 {props.displayVotePercent && <p className='text-lg'>{props.data.votePercent.toFixed(2)}%</p>}
