@@ -8,7 +8,7 @@ const signOutLink = (
     </a>
 );
 
-function UnauthorizedHeader(props: { isAuthorized: boolean; isLoading: boolean }) {
+function Header(props: { isAuthorized: boolean; isLoading: boolean }) {
     const loadingBar = <div className={`w-[100%] bg-blue-400 h-1  rounded-xl animate-pulse`}></div>;
 
     return (
@@ -25,4 +25,4 @@ function UnauthorizedHeader(props: { isAuthorized: boolean; isLoading: boolean }
     );
 }
 
-export default UnauthorizedHeader;
+export default Header;
