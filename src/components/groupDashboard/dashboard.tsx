@@ -1,5 +1,5 @@
 import { Fragment } from 'react/jsx-runtime';
-import Poll, { pollData } from './poll/poll';
+import PollListItem, { pollData } from './poll/pollListItem';
 import { memberData } from './members/membersListItem';
 import MembersList from './members/membersList';
 import Header from '../header/header';

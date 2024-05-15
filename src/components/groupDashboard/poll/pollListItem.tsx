@@ -10,7 +10,7 @@ export type pollData = {
     isClosed: boolean;
 };
 
-function Poll(props: { pollData: pollData; key: string }) {
+function PollListItem(props: { pollData: pollData; key: string }) {
     function toggleAccordion() {
         setIsAccordionOpen((isOpen) => !isOpen);
     }
@@ -76,4 +76,4 @@ function Poll(props: { pollData: pollData; key: string }) {
     );
 }
 
-export default Poll;
+export default PollListItem;
