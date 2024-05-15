@@ -26,7 +26,7 @@ const doubleArrowIcon = (
     </svg>
 );
 function DashBoard() {
-    const gorupName = 'A2SV-G54';
+    const groupName = 'A2SV-G54';
     const motto = 'Vote for what matters to you';
     const pollsData: pollData[] = [
         {
@@ -106,7 +106,7 @@ function DashBoard() {
             <Header isAuthorized={true} isLoading={false}></Header>
             <main className='mt-32'>
                 <hgroup className='flex flex-col gap-6 items-center md:mb-16 mb-10'>
-                    <h1 className='text-blue-700 font-bold text-3xl uppercase'>{gorupName}</h1>
+                    <h1 className='text-blue-700 font-bold text-3xl uppercase'>{groupName}</h1>
                     <p className='uppercase tracking-widest text-sm'>{motto}</p>
                 </hgroup>
 
@@ -116,7 +116,7 @@ function DashBoard() {
                             {pollsData.map((pollData) => Poll(pollData))}
                         </section>
                     </div>
-                    <aside className='min-w-72 absolute z-50 bg-white right-0 lg:mr-16'>
+                    <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
                         <div className='flex items-center gap-2 ml-3'>
                             <button className='flex gap-0'>{doubleArrowIcon}</button>
                             <h1>Members</h1>
