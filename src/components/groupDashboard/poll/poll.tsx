@@ -10,27 +10,27 @@ export type pollData = {
     isClosed: boolean;
 };
 
-function Poll(props: pollData) {
+function Poll(props: { pollData: pollData; key: string }) {
     function toggleAccordion() {
         setIsAccordionOpen((isOpen) => !isOpen);
     }
 
-    const [hasVoted, setHasVoted] = useState(props.hasVoted);
-    const [isClosed, setIsClosed] = useState(props.isClosed);
-    const [optionsData, setOptionsData] = useState(props.options);
-    const [chosenOptionId, setChosenOptionId] = useState(props.chosenOptionId);
+    const [hasVoted, setHasVoted] = useState(props.pollData.hasVoted);
+    const [isClosed, setIsClosed] = useState(props.pollData.isClosed);
+    const [optionsData, setOptionsData] = useState(props.pollData.options);
+    const [chosenOptionId, setChosenOptionId] = useState(props.pollData.chosenOptionId);
 
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const iconColor = hasVoted || isClosed ? 'bg-[#ABACAD]' : 'bg-blue-700';
 
-    const totalVoteCount = props.options.reduce((accumulator, option) => accumulator + option.voteCount, 0);
+    const totalVoteCount = props.pollData.options.reduce((accumulator, option) => accumulator + option.voteCount, 0);
     const optionsWithPercent = optionsData.map((option) => ({
         id: option.id,
         optionText: option.optionText,
         votePercent: (option.voteCount / totalVoteCount) * 100,
     }));
 
-    const question = <h1 className='font-medium mx-2'>{props.question}</h1>;
+    const question = <h1 className='font-medium mx-2'>{props.pollData.question}</h1>;
     const options = optionsWithPercent.map((optionData) => (
         <PollOption
             data={optionData}
@@ -60,7 +60,7 @@ function Poll(props: pollData) {
     );
 
     return (
-        <section className='max-w-4xl w-full flex flex-col gap-5'>
+        <section className='max-w-4xl w-full flex flex-col gap-5' key={props.key}>
             <section
                 className='flex justify-between items-center p-3 hover:shadow-md border rounded-xl transition-all cursor-pointer'
                 onClick={toggleAccordion}
