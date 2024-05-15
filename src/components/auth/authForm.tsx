@@ -67,7 +67,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
             handleSignInSubmit(formData, setSubmitError, props.setIsLoading);
         }
     }
-    console.log(submitError);
+
     const emailInputField = (
         <Input
             type='email'
