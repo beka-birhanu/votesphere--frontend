@@ -3,6 +3,7 @@ import Poll, { pollData } from './poll/poll';
 import { memberData } from './members/membersListItem';
 import MembersList from './members/membersList';
 import Header from '../header/header';
+import PollList from './poll/pollList';
 
 const doubleArrowIcon = (
     <svg
@@ -111,11 +112,7 @@ function DashBoard() {
                 </hgroup>
 
                 <div className='flex items-start min-w-96 w-full relative text-2xl'>
-                    <div className='flex items-start min-w-96 w-full relative'>
-                        <section className='flex flex-col items-center justify-center gap-5 w-full '>
-                            {pollsData.map((pollData) => Poll(pollData))}
-                        </section>
-                    </div>
+                    <div className='flex items-start min-w-96 w-full relative'>{<PollList pollsData={pollsData}></PollList>}</div>
                     <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
                         <div className='flex items-center gap-2 ml-3'>
                             <button className='flex gap-0'>{doubleArrowIcon}</button>
