@@ -1,9 +1,9 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, MouseEventHandler, useEffect, useState } from 'react';
 import AddPollInput from './addPollInput';
 
 const MAX_INPUT_SIZE = 6;
 
-function AddPollForm() {
+function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
     const [optionFields, setOptionFields] = useState<JSX.Element[]>();
     const [maximumReached, setMaximumReached] = useState(false);
 
@@ -34,10 +34,10 @@ function AddPollForm() {
     }
 
     return (
-        <div className='flex items-center min-h-[100vh] justify-center text-2xl bg-black bg-opacity-10'>
-            <div className='max-w-3xl w-full rounded-xl sm:p-12 p-6 grid gap-16 bg-white relative'>
+        <div onClick={props.onClose} className='flex items-center min-h-[100vh] w-full justify-center text-2x  absolute z-50 bg-black bg-opacity-30'>
+            <div className='max-w-3xl w-full rounded-xl sm:p-12 p-6 grid gap-16 bg-white relative' onClick={(event) => event.stopPropagation()}>
                 <form action='' className='grid gap-12 w-full'>
-                    <div className='w-full flex flex-col sm:flex-row'>
+                    <div className='w-full flex flex-col sm:flex-row text-2xl'>
                         <label htmlFor='question' className='mr-6'>
                             Question:
                         </label>
