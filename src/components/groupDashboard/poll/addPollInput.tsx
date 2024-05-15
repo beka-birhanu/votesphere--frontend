@@ -1,6 +1,6 @@
 function AddPollInput(props: { optionNumber: number }) {
     return (
-        <div className='ml-6 flex flex-col sm:flex-row justify-items-stretch  '>
+        <div className='ml-6 flex flex-col sm:flex-row justify-items-stretch text-xl'>
             <label htmlFor='option1' className='mr-6'>
                 {' '}
                 Option {props.optionNumber}:
