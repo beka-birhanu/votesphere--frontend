@@ -3,7 +3,13 @@ import PollListItem, { pollData } from './pollListItem';
 import { createPortal } from 'react-dom';
 import AddPollForm from './addPollForm';
 
-function PollList(props: { pollsData: pollData[] }) {
+const noContent = (
+    <div className='flex w-full justify-center justify-items-start font-bold text-3xl mt-32 text-gray-400'>
+        <p>No polls found!</p>
+    </div>
+);
+
+function PollList(props: { pollsData: pollData[] | null }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     function toggleAddPollForm() {
@@ -22,12 +28,12 @@ function PollList(props: { pollsData: pollData[] }) {
         </button>
     );
 
+    const polls = props.pollsData && props.pollsData.map((pollData) => <PollListItem key={pollData.id} pollData={pollData}></PollListItem>);
+
     return (
         <section className='flex flex-col items-center justify-center gap-5 w-full '>
             {addPollButton}
-            {props.pollsData.map((pollData) => (
-                <PollListItem key={pollData.id} pollData={pollData}></PollListItem>
-            ))}
+            {props.pollsData ? polls : noContent}
             {isModalOpen &&
                 createPortal(<AddPollForm onClose={toggleAddPollForm}></AddPollForm>, document.getElementById('modal-root') as HTMLElement)}
         </section>
