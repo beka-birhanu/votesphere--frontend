@@ -1,9 +1,10 @@
 import { Fragment } from 'react/jsx-runtime';
-import PollListItem, { pollData } from './poll/pollListItem';
+import { pollData } from './poll/pollListItem';
 import { memberData } from './members/membersListItem';
 import MembersList from './members/membersList';
 import Header from '../header/header';
 import PollList from './poll/pollList';
+import { useEffect, useState } from 'react';
 
 const doubleArrowIcon = (
     <svg
@@ -26,82 +27,59 @@ const doubleArrowIcon = (
         </g>
     </svg>
 );
+
 function DashBoard() {
     const groupName = 'A2SV-G54';
     const motto = 'Vote for what matters to you';
-    const pollsData: pollData[] = [
-        {
-            id: 'lskdl;flas;0',
-            chosenOptionId: 'lkksjfd;',
-            question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
-            options: [
-                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
-                { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
-            ],
-            hasVoted: false,
-            isClosed: false,
-        },
+    const [pollsData, setPollsData] = useState<pollData[] | null>(null);
+    const [members, setMembers] = useState<memberData[] | null>(null);
 
-        {
-            id: 'lskdl;flas;1',
-            chosenOptionId: 'lkksjfd;',
-            question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
-            options: [
-                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
-                { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
-            ],
-            hasVoted: false,
-            isClosed: true,
-        },
+    useEffect(() => {
+        fetch('http://localhost:9000/polls?' + new URLSearchParams({ groupId: '830af378-238c-40da-9d4a-8793772f512e' }), {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                Authorization:
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                setPollsData(response);
+            })
+            .catch((error) => {
+                // redirect to sign in
+            });
+    }, []);
 
-        {
-            id: 'lskdl;flas;02',
-            chosenOptionId: 'lkksjfd;',
-            question: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit?',
-            options: [
-                { id: 'lkksjd1;', optionText: 'Lorem ipsum dolor sit amet', voteCount: 16 },
-                { id: 'lkksjfd;', optionText: 'Lorem ipsum dolor sit amet, consecter', voteCount: 15 },
-                { id: 'lkksjd;', optionText: 'Lorem ipsum dolor sit amet, elit', voteCount: 71 },
-            ],
-            hasVoted: true,
-            isClosed: false,
-        },
-    ];
-    const members: memberData[] = [
-        {
-            username: 'beka_user2',
-            email: 'beka_user2@gmail.com',
-            isAdmin: false,
-        },
-        {
-            username: 'beka_user2',
-            email: 'beka_user2@gmail.com',
-            isAdmin: false,
-        },
-        {
-            username: 'beka_user2',
-            email: 'beka_user2@gmail.com',
-            isAdmin: false,
-        },
-        {
-            username: 'beka_birhanu',
-            email: 'beka@gmail.com',
-            isAdmin: true,
-        },
-        {
-            username: 'beka_user',
-            email: 'beka_user@gmail.com',
-            isAdmin: false,
-        },
-        {
-            username: 'beka_user',
-            email: 'beka_user@gmail.com',
-            isAdmin: false,
-        },
-    ];
-
+    useEffect(() => {
+        fetch('http://localhost:9000/groups/830af378-238c-40da-9d4a-8793772f512e/members', {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                Authorization:
+                    'Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((response) => {
+                console.log(response);
+                setMembers(response);
+            })
+            .catch((error) => {
+                // redirect to sign in
+            });
+    }, []);
     return (
         <Fragment>
             <Header isAuthorized={true} isLoading={false}></Header>
