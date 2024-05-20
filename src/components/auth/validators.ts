@@ -1,5 +1,10 @@
 import zxcvbn from 'zxcvbn';
 
+const MINIMUM_USERNAME_LENGTH = 3;
+const MAXIMUM_USERNAME_LENGTH = 20;
+const MINIMUM_PASSWORD_LENGTH = 8;
+const MINIMUM_PASSWORD_STRENGTH = 3;
+
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const usernameRegex = /^[a-zA-Z0-9_]+$/;
 
@@ -13,8 +18,8 @@ export function validateEmail(email: string): string | null {
 }
 
 export function validateUsername(username: string): string | null {
-    if (!username || username.length < 3 || username.length > 20) {
-        return 'Username must be between 3 and 20 characters';
+    if (!username || username.length < MINIMUM_USERNAME_LENGTH || username.length > MAXIMUM_USERNAME_LENGTH) {
+        return `Username must be between ${MINIMUM_USERNAME_LENGTH} and ${MAXIMUM_USERNAME_LENGTH} characters`;
     }
 
     const invalidCharsSet = new Set();
@@ -23,6 +28,7 @@ export function validateUsername(username: string): string | null {
             invalidCharsSet.add(char);
         }
     }
+
     const invalidChars = Array.from(invalidCharsSet);
     if (invalidChars.length > 0) {
         return `Username contains invalid characters: ${invalidChars.join(', ')}`;
@@ -32,12 +38,12 @@ export function validateUsername(username: string): string | null {
 }
 
 export function validatePasswordForSignUp(password: string): string | null {
-    if (!password || password.length < 8) {
+    if (!password || password.length < MINIMUM_PASSWORD_LENGTH) {
         return 'Password must be at least 8 characters long.';
     }
 
     const passwordStrength = zxcvbn(password).score;
-    if (passwordStrength < 3) {
+    if (passwordStrength < MINIMUM_PASSWORD_STRENGTH) {
         return 'Weak password! please mix numbers, and special characters.';
     }
 
@@ -45,7 +51,7 @@ export function validatePasswordForSignUp(password: string): string | null {
 }
 
 export function validatePasswordForSignIn(password: string): string | null {
-    if (!password || password.length < 8) {
+    if (!password || password.length < MINIMUM_PASSWORD_LENGTH) {
         return 'Password must be at least 8 characters long.';
     }
     return null;
