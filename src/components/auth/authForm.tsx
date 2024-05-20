@@ -3,7 +3,7 @@ import useInput from '../../hooks/use-input';
 import { validateEmail, validatePasswordForSignUp, validatePasswordForSignIn, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
 import AuthDropDown from './authDropDown';
-import { handleSignInSubmit, handleSignUpSubmit, signUpFromData } from './authFormSubmitHandlers';
+import { handleSignInSubmit, handleSignUpSubmit, signUpFormData } from './authFormSubmitHandlers';
 
 type formErrors = {
     emailInputError: null | string;
@@ -11,7 +11,7 @@ type formErrors = {
     passwordInputError: null | string;
 };
 
-function checkFromValidity(formType: string, formData: signUpFromData, formErrors: formErrors): boolean | undefined {
+function checkFromValidity(formType: string, formData: signUpFormData, formErrors: formErrors): boolean | undefined {
     const { email, username, password, role } = formData;
     const { emailInputError, usernameInputError, passwordInputError } = formErrors;
     let atLeastOneError;
