@@ -61,7 +61,7 @@ function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
     useEffect(() => {
         const isRequirementFulfilled = question !== '' && option1 !== '' && option2 !== '';
         setCanSubmit(isRequirementFulfilled);
-    });
+    }, [option1, option2, question]);
     function addOptionField() {
         setVisibleOptionFields((prev) => {
             if (prev === MAX_INPUT_SIZE) {
