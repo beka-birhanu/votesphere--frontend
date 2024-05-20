@@ -28,12 +28,14 @@ function PollList(props: { pollsData: pollData[] | null }) {
         </button>
     );
 
-    const polls = props.pollsData && props.pollsData.map((pollData) => <PollListItem key={pollData.id} pollData={pollData}></PollListItem>);
+    const content = props.pollsData
+        ? props.pollsData.map((pollData) => <PollListItem key={pollData.id} pollData={pollData}></PollListItem>)
+        : noContent;
 
     return (
         <section className='flex flex-col items-center justify-center gap-5 w-full '>
             {addPollButton}
-            {props.pollsData ? polls : noContent}
+            {content}
             {isModalOpen &&
                 createPortal(<AddPollForm onClose={toggleAddPollForm}></AddPollForm>, document.getElementById('modal-root') as HTMLElement)}
         </section>
