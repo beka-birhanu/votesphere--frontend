@@ -71,8 +71,8 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const emailInputField = (
         <Input
             type='email'
-            changeHandler={setEmail}
-            blurHandler={emailInputBlurHandler}
+            onChange={setEmail}
+            onBlur={emailInputBlurHandler}
             value={email}
             error={emailInputError ? emailInputError : submitError.emailError}
             isTouched={isEmailInputTouched}
@@ -82,8 +82,8 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const usernameInputField = (
         <Input
             type='username'
-            changeHandler={setUsername}
-            blurHandler={usernameInputBlurHandler}
+            onChange={setUsername}
+            onBlur={usernameInputBlurHandler}
             value={username}
             error={usernameInputError ? usernameInputError : submitError.usernameError}
             isTouched={isUsernameInputTouched}
@@ -93,8 +93,8 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const passwordInputField = (
         <Input
             type='password'
-            changeHandler={setPassword}
-            blurHandler={passwordInputBlurHandler}
+            onChange={setPassword}
+            onBlur={passwordInputBlurHandler}
             value={password}
             error={passwordInputError ? usernameInputError : submitError.passwordError}
             isTouched={isPasswordInputTouched}

@@ -45,8 +45,8 @@ function AddMemberForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
     const usernameInputField = (
         <Input
             type='username'
-            changeHandler={setUsername}
-            blurHandler={usernameInputBlurHandler}
+            onChange={setUsername}
+            onBlur={usernameInputBlurHandler}
             value={username}
             error={submitError ? submitError : usernameInputError}
             isTouched={isUsernameInputTouched}
