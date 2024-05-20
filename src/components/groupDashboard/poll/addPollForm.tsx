@@ -1,6 +1,6 @@
 import { MouseEventHandler, useEffect, useState } from 'react';
 import AddPollInput from './addPollInput';
-import LoadingSVG from '../loadingSVG';
+import LoadingSVG from '../icons/loadingSVG';
 
 const MAX_INPUT_SIZE = 6;
 

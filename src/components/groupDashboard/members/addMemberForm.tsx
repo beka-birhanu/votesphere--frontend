@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useInput from '../../../hooks/use-input';
 import Input from '../../auth/authInput';
 import { validateUsername } from '../../auth/validators';
-import LoadingSVG from '../loadingSVG';
+import LoadingSVG from '../icons/loadingSVG';
 
 async function submit(username: string, setIsLoading: CallableFunction, setSubmitError: CallableFunction, closeModal: CallableFunction) {
     setIsLoading(true);
