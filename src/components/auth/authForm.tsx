@@ -5,45 +5,44 @@ import { useEffect, useState } from 'react';
 import AuthDropDown from './authDropDown';
 import { handleSignInSubmit, handleSignUpSubmit, signUpFormData } from './authFormSubmitHandlers';
 
-type formErrors = {
+type formError = {
     emailInputError: null | string;
     usernameInputError: null | string;
     passwordInputError: null | string;
 };
 
-function checkFromValidity(formType: string, formData: signUpFormData, formErrors: formErrors): boolean | undefined {
+function checkFromValidity(formType: string, formData: signUpFormData, formErrors: formError): boolean | undefined {
     const { email, username, password, role } = formData;
     const { emailInputError, usernameInputError, passwordInputError } = formErrors;
+
+    const isEmailEmpty = email === null || email === '';
+    const isUsernameEmpty = username === null || username === '';
+    const isPasswordEmpty = password === null || password === '';
+    const isRollEmpty = role === null || role == '';
+
     let atLeastOneError;
     let atLeastOneEmpty;
 
     if (formType === 'sign up') {
         atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
-        atLeastOneEmpty =
-            email === null ||
-            email === '' ||
-            username === null ||
-            username === '' ||
-            password === null ||
-            password === '' ||
-            role === null ||
-            role == '';
+        atLeastOneEmpty = isEmailEmpty || isUsernameEmpty || isPasswordEmpty || isRollEmpty;
     } else if (formType === 'login') {
         atLeastOneError = usernameInputError !== null || passwordInputError !== null;
-        atLeastOneEmpty = username === null || username === '' || password === null || password === '';
+        atLeastOneEmpty = isUsernameEmpty || isPasswordEmpty;
     }
     return (atLeastOneEmpty || atLeastOneError) === false;
 }
 
 function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunction }) {
+    const passwordValidator = props.type === 'sign up' ? validatePasswordForSignUp : validatePasswordForSignIn;
+
     const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
     const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
         useInput(validateUsername);
-    const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] = useInput(
-        props.type === 'sign up' ? validatePasswordForSignUp : validatePasswordForSignIn,
-    );
-    const [role, setRole] = useState(null);
+    const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
+        useInput(passwordValidator);
 
+    const [role, setRole] = useState(null);
     const [formHasError, setFromHasError] = useState(true);
     const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null, passwordError: null });
 
