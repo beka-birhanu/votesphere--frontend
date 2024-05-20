@@ -31,54 +31,62 @@ const doubleArrowIcon = (
 function DashBoard() {
     const groupName = 'A2SV-G54';
     const motto = 'Vote for what matters to you';
+
     const [pollsData, setPollsData] = useState<pollData[] | null>(null);
     const [members, setMembers] = useState<memberData[] | null>(null);
 
     useEffect(() => {
-        fetch('http://localhost:9000/polls?' + new URLSearchParams({ groupId: '830af378-238c-40da-9d4a-8793772f512e' }), {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
-            },
-        })
-            .then((response) => {
+        const fetchPolls = async () => {
+            try {
+                const response = await fetch(
+                    'http://localhost:9000/polls?' + new URLSearchParams({ groupId: '830af378-238c-40da-9d4a-8793772f512e' }),
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization:
+                                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
+                        },
+                    },
+                );
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
-                return response.json();
-            })
-            .then((response) => {
-                setPollsData(response);
-            })
-            .catch((error) => {
-                // redirect to sign in
-            });
+                const data = await response.json();
+                setPollsData(data);
+            } catch (error) {
+                console.error('Error fetching polls:', error);
+                // redirect to sign in or handle the error appropriately
+            }
+        };
+
+        fetchPolls();
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:9000/groups/830af378-238c-40da-9d4a-8793772f512e/members', {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                Authorization:
-                    'Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
-            },
-        })
-            .then((response) => {
+        const fetchMembers = async () => {
+            try {
+                const response = await fetch('http://localhost:9000/groups/830af378-238c-40da-9d4a-8793772f512e/members', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization:
+                            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
+                    },
+                });
                 if (!response.ok) {
                     throw new Error(response.statusText);
                 }
-                return response.json();
-            })
-            .then((response) => {
-                console.log(response);
-                setMembers(response);
-            })
-            .catch((error) => {
-                // redirect to sign in
-            });
+                const data = await response.json();
+                console.log(data);
+                setMembers(data);
+            } catch (error) {
+                console.error('Error fetching members:', error);
+                // redirect to sign in or handle the error appropriately
+            }
+        };
+
+        fetchMembers();
     }, []);
     return (
         <Fragment>

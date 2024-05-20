@@ -40,6 +40,7 @@ async function submit(question: string, options: string[], setIsLoading: Callabl
 
 function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
     const [isLoading, setIsLoading] = useState(false);
+
     const [question, setQuestion] = useState('');
     const [option1, setOption1] = useState('');
     const [option2, setOption2] = useState('');
@@ -63,6 +64,7 @@ function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
         const isRequirementFulfilled = question !== '' && option1 !== '' && option2 !== '';
         setCanSubmit(isRequirementFulfilled);
     }, [option1, option2, question]);
+
     function addOptionField() {
         setVisibleOptionFields((prev) => {
             if (prev === MAX_INPUT_SIZE) {
