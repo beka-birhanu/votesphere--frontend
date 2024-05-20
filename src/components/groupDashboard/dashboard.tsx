@@ -5,28 +5,7 @@ import MembersList from './members/membersList';
 import Header from '../header/header';
 import PollList from './poll/pollList';
 import { useEffect, useState } from 'react';
-
-const doubleArrowIcon = (
-    <svg
-        fill='#cdcdcd'
-        version='1.1'
-        id='Capa_1'
-        width='16px'
-        height='24px'
-        viewBox='0 0 220.682 220.682'
-        stroke='#cdcdcd'
-        className='-rotate-45 sm:rotate-0'
-    >
-        <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
-        <g id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'></g>
-        <g id='SVGRepo_iconCarrier'>
-            <g>
-                <polygon points='92.695,38.924 164.113,110.341 92.695,181.758 120.979,210.043 220.682,110.341 120.979,10.639 '></polygon>
-                <polygon points='28.284,210.043 127.986,110.341 28.284,10.639 0,38.924 71.417,110.341 0,181.758 '></polygon>
-            </g>
-        </g>
-    </svg>
-);
+import DoubleArrowIcon from './icons/doubleArrowSVG';
 
 function DashBoard() {
     const groupName = 'A2SV-G54';
@@ -101,7 +80,7 @@ function DashBoard() {
                     <div className='flex items-start min-w-96 w-full relative'>{<PollList pollsData={pollsData}></PollList>}</div>
                     <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
                         <div className='flex items-center gap-2 ml-3'>
-                            <button className='flex gap-0'>{doubleArrowIcon}</button>
+                            <button className='flex gap-0'>{<DoubleArrowIcon></DoubleArrowIcon>}</button>
                             <h1>Members</h1>
                         </div>
                         {<MembersList members={members}></MembersList>}
