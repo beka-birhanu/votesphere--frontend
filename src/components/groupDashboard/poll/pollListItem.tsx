@@ -1,6 +1,21 @@
 import { useState } from 'react';
 import PollOption from './option';
 
+function ToggleAccordionIcon(props: { iconDirection: number }) {
+    return (
+        <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='24'
+            height='24'
+            fill='#ABACAD'
+            style={{ transform: `rotate(${props.iconDirection}deg)` }}
+            className='transition-all ease-in-out'
+        >
+            <path d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z' />
+        </svg>
+    );
+}
+
 export type pollData = {
     id: string;
     chosenOptionId: string | null;
@@ -24,6 +39,7 @@ function PollListItem(props: { pollData: pollData; key: string }) {
     const iconColor = hasVoted || isClosed ? 'bg-[#ABACAD]' : 'bg-blue-700';
 
     const totalVoteCount = props.pollData.options.reduce((accumulator, option) => accumulator + option.voteCount, 0);
+
     const optionsWithPercent = optionsData.map((option) => ({
         id: option.id,
         optionText: option.optionText,
@@ -44,18 +60,10 @@ function PollListItem(props: { pollData: pollData; key: string }) {
     ));
 
     const iconDirection = isAccordionOpen ? -90 : 90;
-    const toggleAccordionIcon = (
+    const toggleAccordionButton = (
         <button>
-            <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                fill='#ABACAD'
-                style={{ transform: `rotate(${iconDirection}deg)` }}
-                className='transition-all ease-in-out'
-            >
-                <path d='M7.293 4.707 14.586 12l-7.293 7.293 1.414 1.414L17.414 12 8.707 3.293 7.293 4.707z' />
-            </svg>
+            {' '}
+            <ToggleAccordionIcon iconDirection={iconDirection}></ToggleAccordionIcon>{' '}
         </button>
     );
 
@@ -69,7 +77,7 @@ function PollListItem(props: { pollData: pollData; key: string }) {
                     <p className='text-blue-50 pt-[1px] font-extrabold text-2xl'>?</p>
                 </div>
                 {question}
-                {toggleAccordionIcon}
+                {toggleAccordionButton}
             </section>
             {isAccordionOpen && <section className='flex flex-col px-6 py-4 gap-3 w-full'>{options}</section>}
         </section>
