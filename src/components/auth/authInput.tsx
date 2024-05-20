@@ -3,23 +3,12 @@ import React, { ChangeEventHandler, FocusEventHandler } from 'react';
 const UserIconSVG = React.lazy(() => import('./SVG/userIconSVG'));
 const EmailIconSVG = React.lazy(() => import('./SVG/emailIconSVG'));
 const PasswordIconSVG = React.lazy(() => import('./SVG/passwordIconSVG'));
+const ErrorIcon = React.lazy(() => import('./SVG/errorIconSVG'));
 
 const userIconSVG = <UserIconSVG />;
 const emailIconSVG = <EmailIconSVG />;
 const passwordIconSVG = <PasswordIconSVG />;
-
-const errorIcon = (
-    <svg width='12px' height='12px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-        <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
-        <g id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'></g>
-        <g id='SVGRepo_iconCarrier'>
-            {' '}
-            <path d='M12 8V12' stroke='#ef4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>{' '}
-            <path d='M12 16.0195V16' stroke='#ef4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>{' '}
-            <circle cx='12' cy='12' r='10' stroke='#ef4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></circle>{' '}
-        </g>
-    </svg>
-);
+const errorIcon = <ErrorIcon></ErrorIcon>;
 
 const nonErrorStyleClassName = 'border-[1px] border-[#CDCDCD] hover:border-gray-400';
 const errorStyleClassName = 'border-[1px] border-red-400 hover:border-red-400';
