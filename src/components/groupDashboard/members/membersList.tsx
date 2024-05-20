@@ -4,13 +4,14 @@ import AddMemberForm from './addMemberForm';
 import { startTransition, useState } from 'react';
 
 const noContent = (
-    <div className='flex w-full justify-center justify-items-start font-bold text-2xl text-gray-400'>
+    <div className='flex w-full justify-center justify-items-start font-bold text-2xl text-gray-400 mb-3'>
         <p>No members found!</p>
     </div>
 );
 
 function putAdminFirst(members: memberData[]): void {
     const n = members.length;
+
     for (let i = 0; i < n; i++) {
         const member = members[i];
 
@@ -25,15 +26,17 @@ function putAdminFirst(members: memberData[]): void {
 function MembersList(props: { members: memberData[] | null }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    let content: JSX.Element | JSX.Element[] = noContent;
+    let content: JSX.Element = noContent;
 
     if (props.members) {
         props.members.sort((a, b) => (a.username < b.username ? -1 : 1));
         putAdminFirst(props.members);
 
-        content = props.members.map((member) => (
+        const listItems = props.members.map((member) => (
             <MembersListItem username={member.username} email={member.email} isAdmin={member.isAdmin}></MembersListItem>
         ));
+
+        content = <ul className='flex flex-col gap-4 mb-8 '>{listItems}</ul>;
     }
 
     function toggleAddMemberForm() {
@@ -52,7 +55,7 @@ function MembersList(props: { members: memberData[] | null }) {
 
     return (
         <div className='shadow-lg rounded-xl px-12 py-6 mt-6 max-h-[100vh] overflow-y-scroll'>
-            <ul className='flex flex-col gap-4 mb-8 '>{content}</ul>
+            {content}
             {addMemberButton}
             {isModalOpen &&
                 createPortal(<AddMemberForm onClose={toggleAddMemberForm}></AddMemberForm>, document.getElementById('modal-root') as HTMLElement)}
