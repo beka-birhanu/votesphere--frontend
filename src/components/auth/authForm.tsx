@@ -2,7 +2,7 @@ import Input from './authInput';
 import useInput from '../../hooks/use-input';
 import { validateEmail, validatePasswordForSignUp, validatePasswordForSignIn, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
-import DropDown from './authDropDown';
+import AuthDropDown from './authDropDown';
 import { handleSignInSubmit, handleSignUpSubmit, signUpFromData } from './authFormSubmitHandlers';
 
 type formErrors = {
@@ -105,7 +105,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         <form className='flex flex-col justify-stretch gap-16' onSubmit={handleSubmit}>
             <div className='flex flex-col justify-stretch sm:p-12 p-2'>
                 {props.type === 'sign up' && emailInputField} {usernameInputField} {passwordInputField}
-                {props.type === 'sign up' && <DropDown onSelect={setRole} options={['User', 'Admin']}></DropDown>}
+                {props.type === 'sign up' && <AuthDropDown onSelect={setRole} options={['User', 'Admin']}></AuthDropDown>}
             </div>
             <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500' disabled={formHasError}>
                 {props.type}

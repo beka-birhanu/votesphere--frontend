@@ -1,4 +1,4 @@
-function DropDown(props: { onSelect: CallableFunction; options: string[] }) {
+function AuthDropDown(props: { onSelect: CallableFunction; options: string[] }) {
     function handleSelection(event: React.ChangeEvent<HTMLSelectElement>) {
         props.onSelect(event.target.value);
     }
@@ -23,4 +23,4 @@ function DropDown(props: { onSelect: CallableFunction; options: string[] }) {
         </div>
     );
 }
-export default DropDown;
+export default AuthDropDown;
