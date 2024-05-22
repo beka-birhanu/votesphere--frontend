@@ -1,3 +1,6 @@
+import { error } from 'console';
+import { pollData } from './pollListItem';
+
 type optionData = { id: string; optionText: string; votePercent: number };
 
 const chosenMark = (
@@ -19,13 +22,29 @@ function PollOption(props: {
     const barWidth = Math.round(props.data.votePercent);
     const votePercentBar = <div style={{ width: `${barWidth}%` }} className='h-[5px] bg-blue-500 rounded-full ml-1`} ' />;
 
-    function handleVote(event: React.MouseEvent<HTMLElement>) {
-        // hit API
-        props.setHasVoted(true);
-        props.setIsClosed(false);
-        // setOptionData()
-        props.setChosenOptionId(props.data.id);
-        console.log(props.data.optionText);
+    async function handleVote(event: React.MouseEvent<HTMLElement>) {
+        try {
+            const response = await fetch(`https://localhost:9000/polls/${props.data.id}/vote`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization:
+                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWlubiIsImlhdCI6MTcxNjQwNDE0NCwiZXhwIjoxNzE2NDA3NzQ0fQ.FJDk8IjvLvKAZAEV-uKFAOE860v7xJL55_Vnc4xuIoQ',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            const updatedPoll: pollData = await response.json();
+
+            props.setOptionsData(updatedPoll.options);
+            props.setHasVoted(true);
+            props.setIsClosed(false);
+            props.setChosenOptionId(props.data.id);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
