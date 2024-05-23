@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 type successResponse = {
     username: string;
     role: string;
@@ -36,22 +38,16 @@ async function sendData(
     try {
         setIsLoading(true);
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
+        const response = await axios.post(url, formData);
+        const successData: successResponse = response.data;
 
-        if (response.ok) {
-            const successData: successResponse = await response.json();
-
-            return { isSuccess: true, data: successData };
-        } else {
-            const errorData: errorResponse = await response.json();
-
+        return { isSuccess: true, data: successData };
+    } catch (error: any) {
+        if (error.response) {
+            const errorData: errorResponse = error.response.data;
             return { isSuccess: false, data: errorData };
         }
-    } catch (error: any) {
+
         console.log(error.message);
 
         return null;
@@ -61,7 +57,7 @@ async function sendData(
 }
 
 export async function handleSignUpSubmit(formData: signUpFormData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
-    const url = 'http://localhost:9000/auth/signup';
+    const url = '/auth/signup';
     const response = await sendData(url, formData, setIsLoading);
     const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
@@ -85,7 +81,7 @@ export async function handleSignUpSubmit(formData: signUpFormData, setSubmitErro
 }
 
 export async function handleSignInSubmit(formData: signInFormData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
-    const url = 'http://localhost:9000/auth/signin';
+    const url = '/auth/signin';
     const response = await sendData(url, formData, setIsLoading);
     const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
