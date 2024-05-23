@@ -11,3 +11,9 @@ export async function fetchMembers(groupID: string) {
         throw error;
     }
 }
+
+export async function addMember(username: string, groupID: string) {
+    const url = `/groups/${groupID}/members`;
+
+    return axios.post(url, { username });
+}

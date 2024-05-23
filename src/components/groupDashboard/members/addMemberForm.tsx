@@ -3,39 +3,40 @@ import useInput from '../../../hooks/use-input';
 import Input from '../../auth/authInput';
 import { validateUsername } from '../../auth/validators';
 import LoadingSVG from '../icons/loadingSVG';
+import { addMember } from '../../../API/members';
+import axios from 'axios';
 
-async function submit(username: string, setIsLoading: CallableFunction, setSubmitError: CallableFunction, closeModal: CallableFunction) {
+async function submit(
+    groupID: string,
+    username: string,
+    setIsLoading: CallableFunction,
+    setSubmitError: CallableFunction,
+    closeModal: CallableFunction,
+) {
+    const NOT_FOUND = 404;
+    const CONFLICT = 409;
+
     setIsLoading(true);
-    try {
-        const response = await fetch('http://localhost:9000/groups/830af378-238c-40da-9d4a-8793772f512e/members', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-                Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE2MTkyODc2LCJleHAiOjE3MTYxOTY0NzZ9.poz5WxasEQO_WqguaLODxa35-XsiPYamWPKxb-q0IIw',
-            },
-            body: JSON.stringify({ username }),
-        });
 
-        if (!response.ok) {
-            if (response.status === 404) {
-                setSubmitError('Invalid username');
-            } else if (response.status === 409) {
-                setSubmitError('User already belongs to another group');
-            } else {
-                throw new Error(response.statusText);
-            }
-        } else {
-            closeModal();
-        }
+    try {
+        await addMember(username, groupID);
+        closeModal();
     } catch (error) {
         console.log(error);
+
+        if (axios.isAxiosError(error)) {
+            if (error.response?.status === NOT_FOUND) {
+                setSubmitError('Invalid username');
+            } else if (error.response?.status === CONFLICT) {
+                setSubmitError('User already belongs to another group');
+            }
+        }
     } finally {
         setIsLoading(false);
     }
 }
 
-function AddMemberForm(props: { onClose: CallableFunction }) {
+function AddMemberForm(props: { onClose: CallableFunction; groupID: string }) {
     const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
         useInput(validateUsername);
     const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +63,7 @@ function AddMemberForm(props: { onClose: CallableFunction }) {
             return null;
         }
 
-        submit(username, setIsLoading, setSubmitError, props.onClose);
+        submit(props.groupID, username, setIsLoading, setSubmitError, props.onClose);
     }
 
     return (
