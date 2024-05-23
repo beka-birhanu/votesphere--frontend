@@ -3,7 +3,7 @@ import useInput from '../../hooks/use-input';
 import { validateEmail, validatePasswordForSignUp, validatePasswordForSignIn, validateUsername } from './validators';
 import { useEffect, useState } from 'react';
 import AuthDropDown from './authDropDown';
-import { handleSignInSubmit, handleSignUpSubmit, signUpFormData } from './authFormSubmitHandlers';
+import { handleSignInSubmit, handleSignUpSubmit, signUpFormData } from '../../API/authFormSubmitHandlers';
 
 type formError = {
     emailInputError: null | string;
