@@ -6,32 +6,21 @@ import Header from '../header/header';
 import PollList from './poll/pollList';
 import { useEffect, useState } from 'react';
 import DoubleArrowIcon from './icons/doubleArrowSVG';
+import { fetchPolls } from '../../API/poll';
+import { fetchMembers } from '../../API/members';
 
 function DashBoard() {
     const groupName = 'A2SV-G54';
     const motto = 'Vote for what matters to you';
+    const groupID = 'sdkfjlsd';
 
     const [pollsData, setPollsData] = useState<pollData[] | null>(null);
     const [members, setMembers] = useState<memberData[] | null>(null);
 
     useEffect(() => {
-        const fetchPolls = async () => {
+        const getPolls = async () => {
             try {
-                const response = await fetch(
-                    'http://localhost:9000/polls?' + new URLSearchParams({ groupId: '830af378-238c-40da-9d4a-8793772f512e' }),
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization:
-                                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
-                        },
-                    },
-                );
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                const data = await response.json();
+                const data = await fetchPolls(groupID);
                 setPollsData(data);
             } catch (error) {
                 console.error('Error fetching polls:', error);
@@ -39,25 +28,13 @@ function DashBoard() {
             }
         };
 
-        fetchPolls();
+        getPolls();
     }, []);
 
     useEffect(() => {
-        const fetchMembers = async () => {
+        const getMembers = async () => {
             try {
-                const response = await fetch('http://localhost:9000/groups/830af378-238c-40da-9d4a-8793772f512e/members', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE1OTQ0NTI5LCJleHAiOjE3MTU5NDgxMjl9.L9iGvWS2KNRnYqy7muWMw5tXpkjqWXBd49GggLKTFn4',
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                const data = await response.json();
-                console.log(data);
+                const data = await fetchMembers(groupID);
                 setMembers(data);
             } catch (error) {
                 console.error('Error fetching members:', error);
@@ -65,8 +42,9 @@ function DashBoard() {
             }
         };
 
-        fetchMembers();
+        getMembers();
     }, []);
+
     return (
         <Fragment>
             <Header isAuthorized={true} isLoading={false}></Header>
