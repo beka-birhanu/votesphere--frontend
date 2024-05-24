@@ -45,6 +45,7 @@ async function sendData(
     } catch (error: any) {
         if (error.response) {
             const errorData: errorResponse = error.response.data;
+
             return { isSuccess: false, data: errorData };
         }
 
@@ -57,7 +58,7 @@ async function sendData(
 }
 
 export async function handleSignUpSubmit(formData: signUpFormData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
-    const url = '/auth/signup';
+    const url = 'http://localhost:9000/auth/signup';
     const response = await sendData(url, formData, setIsLoading);
     const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
@@ -81,7 +82,7 @@ export async function handleSignUpSubmit(formData: signUpFormData, setSubmitErro
 }
 
 export async function handleSignInSubmit(formData: signInFormData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
-    const url = '/auth/signin';
+    const url = 'http://localhost:9000/auth/signin';
     const response = await sendData(url, formData, setIsLoading);
     const errorDetails: errorDetail = { emailError: null, passwordError: null, usernameError: null, serverError: null };
 
