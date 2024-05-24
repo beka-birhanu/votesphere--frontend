@@ -1,4 +1,4 @@
-import { error } from 'console';
+import { castVote } from '../../../API/poll';
 import { pollData } from './pollListItem';
 
 type optionData = { id: string; optionText: string; votePercent: number };
@@ -24,19 +24,7 @@ function PollOption(props: {
 
     async function handleVote(event: React.MouseEvent<HTMLElement>) {
         try {
-            const response = await fetch(`https://localhost:9000/polls/${props.data.id}/vote`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWlubiIsImlhdCI6MTcxNjQwNDE0NCwiZXhwIjoxNzE2NDA3NzQ0fQ.FJDk8IjvLvKAZAEV-uKFAOE860v7xJL55_Vnc4xuIoQ',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            const updatedPoll: pollData = await response.json();
+            const updatedPoll: pollData = await castVote(props.data.id, props.data.id);
 
             props.setOptionsData(updatedPoll.options);
             props.setHasVoted(true);
