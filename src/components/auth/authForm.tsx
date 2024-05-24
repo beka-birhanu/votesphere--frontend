@@ -43,7 +43,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         useInput(passwordValidator);
 
     const [role, setRole] = useState(null);
-    const [formHasError, setFromHasError] = useState(true);
+    const [formHasError, setFormHasError] = useState(true);
     const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null, passwordError: null });
 
     useEffect(() => {
@@ -51,7 +51,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         const formErrors = { emailInputError, usernameInputError, passwordInputError };
         const isValid = checkFromValidity(props.type, formData, formErrors);
 
-        setFromHasError(!isValid);
+        setFormHasError(!isValid);
         setSubmitError({ emailError: null, usernameError: null, serverError: null, passwordError: null });
     }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
