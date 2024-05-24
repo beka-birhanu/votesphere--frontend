@@ -2,6 +2,7 @@ import { Fragment } from 'react/jsx-runtime';
 import AuthForm from './authForm';
 import Header from '../header/header';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Login() {
     const [isLoading, setIsLoading] = useState(false);
@@ -19,10 +20,10 @@ function Login() {
                     {<AuthForm type='login' setIsLoading={setIsLoading}></AuthForm>}
                     <p className='text-center '>
                         New to Vote Sphere?{' '}
-                        <a href='#' className='text-blue-600 underline'>
+                        <Link to={'/sign-up'} className='text-blue-600 underline'>
                             {' '}
                             Sign up
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>

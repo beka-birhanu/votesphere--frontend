@@ -2,6 +2,7 @@ import { Fragment } from 'react/jsx-runtime';
 import AuthForm from './authForm';
 import Header from '../header/header';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const welcomeMessage = 'Welcome';
 const motto = 'Vote for what matters to you';
@@ -22,9 +23,9 @@ function SignUp() {
                     {<AuthForm type='sign up' setIsLoading={setIsLoading}></AuthForm>}
                     <p className='text-center '>
                         Already have account?{' '}
-                        <a href='#' className='text-blue-600 underline'>
+                        <Link to={'/login'} className='text-blue-600 underline'>
                             Login
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
