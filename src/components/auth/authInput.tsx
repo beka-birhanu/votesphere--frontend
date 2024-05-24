@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FocusEventHandler } from 'react';
+import React, { ChangeEventHandler, FocusEventHandler, startTransition, useEffect, useState } from 'react';
 
 const UserIconSVG = React.lazy(() => import('./SVG/userIconSVG'));
 const EmailIconSVG = React.lazy(() => import('./SVG/emailIconSVG'));
@@ -21,6 +21,7 @@ function Input(props: {
     error: string | null;
     isTouched: boolean;
 }) {
+    const [showError, setShowError] = useState(false);
     let icon;
 
     if (props.type == 'username') {
@@ -31,7 +32,15 @@ function Input(props: {
         icon = passwordIconSVG;
     }
 
-    const showError = props.error !== null && props.isTouched;
+    useEffect(() => {
+        // to make sure the update happens with the correct sequence
+        const timeoutId = setTimeout(() => {
+            setShowError(props.error !== null && props.isTouched);
+        }, 0);
+
+        return () => clearTimeout(timeoutId);
+    }, [props.error, props.isTouched]);
+
     const borderStyle = showError ? errorStyleClassName : nonErrorStyleClassName;
     const errorMessage = props.error?.toString();
 
