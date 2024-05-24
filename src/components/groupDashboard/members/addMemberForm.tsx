@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import useInput from '../../../hooks/use-input';
 import Input from '../../auth/authInput';
 import { validateUsername } from '../../auth/validators';
 import LoadingSVG from '../icons/loadingSVG';
 import { addMember } from '../../../API/members';
 import axios from 'axios';
+import { UserDataContext } from '../dashboard';
 
 async function submit(
     groupID: string,
@@ -36,11 +37,13 @@ async function submit(
     }
 }
 
-function AddMemberForm(props: { onClose: CallableFunction; groupID: string }) {
+function AddMemberForm(props: { onClose: CallableFunction }) {
     const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
         useInput(validateUsername);
     const [isLoading, setIsLoading] = useState(false);
     const [submitError, setSubmitError] = useState(null);
+
+    const { groupID } = useContext(UserDataContext);
 
     const usernameInputField = (
         <Input
@@ -63,7 +66,7 @@ function AddMemberForm(props: { onClose: CallableFunction; groupID: string }) {
             return null;
         }
 
-        submit(props.groupID, username, setIsLoading, setSubmitError, props.onClose);
+        submit(groupID, username, setIsLoading, setSubmitError, props.onClose);
     }
 
     return (

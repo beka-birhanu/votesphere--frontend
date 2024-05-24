@@ -1,18 +1,21 @@
-import { Fragment } from 'react/jsx-runtime';
+import React, { createContext, useEffect, useState, Fragment } from 'react';
 import { pollData } from './poll/pollListItem';
 import { memberData } from './members/membersListItem';
 import MembersList from './members/membersList';
 import Header from '../header/header';
 import PollList from './poll/pollList';
-import { useEffect, useState } from 'react';
 import DoubleArrowIcon from './icons/doubleArrowSVG';
 import { fetchPolls } from '../../API/poll';
 import { fetchMembers } from '../../API/members';
 
+const UserDataContext = createContext({ groupID: '', username: '' });
+
 function DashBoard() {
     const groupName = 'A2SV-G54';
     const motto = 'Vote for what matters to you';
+
     const groupID = 'sdkfjlsd';
+    const username = 'beka_admin';
 
     const [pollsData, setPollsData] = useState<pollData[] | null>(null);
     const [members, setMembers] = useState<memberData[] | null>(null);
@@ -55,14 +58,21 @@ function DashBoard() {
                 </hgroup>
 
                 <div className='flex items-start min-w-96 w-full relative text-2xl'>
-                    <div className='flex items-start min-w-96 w-full relative'>{<PollList pollsData={pollsData}></PollList>}</div>
-                    <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
-                        <div className='flex items-center gap-2 ml-3'>
-                            <button className='flex gap-0'>{<DoubleArrowIcon></DoubleArrowIcon>}</button>
-                            <h1>Members</h1>
+                    <UserDataContext.Provider value={{ groupID, username }}>
+                        <div className='flex items-start min-w-96 w-full relative'>
+                            <PollList pollsData={pollsData} />
                         </div>
-                        {<MembersList members={members}></MembersList>}
-                    </aside>
+
+                        <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
+                            <div className='flex items-center gap-2 ml-3'>
+                                <button className='flex gap-0'>
+                                    <DoubleArrowIcon />
+                                </button>
+                                <h1>Members</h1>
+                            </div>
+                            <MembersList members={members} />
+                        </aside>
+                    </UserDataContext.Provider>
                 </div>
             </main>
         </Fragment>
@@ -70,3 +80,4 @@ function DashBoard() {
 }
 
 export default DashBoard;
+export { UserDataContext };

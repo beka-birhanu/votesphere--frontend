@@ -1,15 +1,16 @@
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, useContext, useEffect, useState } from 'react';
 import AddPollInput from './addPollInput';
 import LoadingSVG from '../icons/loadingSVG';
 import { addPoll } from '../../../API/poll';
+import { UserDataContext } from '../dashboard';
 
 const MAX_INPUT_SIZE = 6;
 
-async function submit(question: string, options: string[], setIsLoading: CallableFunction) {
+async function submit(poll: { question: string; options: string[] }, groupID: string, adminUsername: string, setIsLoading: CallableFunction) {
     setIsLoading(true);
 
     try {
-        const response = await addPoll('beka_admin', '830af378-238c-40da-9d4a-8793772f512e', { question, options });
+        const response = await addPoll(adminUsername, groupID, poll);
 
         console.log('Poll created successfully:', response.data);
     } catch (error) {
@@ -20,6 +21,8 @@ async function submit(question: string, options: string[], setIsLoading: Callabl
 }
 
 function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
+    const { groupID, username } = useContext(UserDataContext);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [question, setQuestion] = useState('');
@@ -78,7 +81,7 @@ function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
             optionInputsData.push(option6);
         }
 
-        submit(question, optionInputsData, setIsLoading);
+        submit({ question, options: optionInputsData }, groupID, username, setIsLoading);
     }
 
     return (
