@@ -3,7 +3,7 @@ import axios from 'axios';
 type successResponse = {
     username: string;
     role: string;
-    groupID: null;
+    groupID: null | string;
     accessToken: string;
     refreshToken: string;
 };
@@ -65,7 +65,13 @@ export async function handleSignUpSubmit(formData: signUpFormData, setSubmitErro
     if (!response) {
         errorDetails.serverError = 'Server Error';
     } else if (response.isSuccess) {
-        localStorage.setItem('loginData', JSON.stringify(response.data));
+        const { username, groupID, role, accessToken, refreshToken } = response.data as successResponse;
+
+        localStorage.setItem('username', username);
+        localStorage.setItem('groupID', groupID === null ? 'null' : groupID.toString());
+        localStorage.setItem('role', role);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
     } else {
         if (response.data && 'message' in response.data) {
             const errorMessage = response.data.message;
@@ -89,7 +95,13 @@ export async function handleSignInSubmit(formData: signInFormData, setSubmitErro
     if (!response) {
         errorDetails.serverError = 'Server Error';
     } else if (response.isSuccess) {
-        localStorage.setItem('loginData', JSON.stringify(response.data));
+        const { username, groupID, role, accessToken, refreshToken } = response.data as successResponse;
+
+        localStorage.setItem('username', username);
+        localStorage.setItem('groupID', groupID === null ? 'null' : groupID.toString());
+        localStorage.setItem('role', role);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
     } else {
         if (response.data && 'message' in response.data) {
             const errorMessage = response.data.message;
