@@ -1,6 +1,7 @@
 import { MouseEventHandler, useEffect, useState } from 'react';
 import AddPollInput from './addPollInput';
 import LoadingSVG from '../icons/loadingSVG';
+import { addPoll } from '../../../API/poll';
 
 const MAX_INPUT_SIZE = 6;
 
@@ -8,29 +9,9 @@ async function submit(question: string, options: string[], setIsLoading: Callabl
     setIsLoading(true);
 
     try {
-        const response = await fetch('http://localhost:9000/polls', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJla2FfYWRtaW5AZ21haWwuY29tIiwidXNlcm5hbWUiOiJiZWthX2FkbWluIiwiaWF0IjoxNzE2MTQ2MTEzLCJleHAiOjE3MTYxNDk3MTN9.5iUTLqeYbHpqNVCKZk5fgnuZHCrBt6fEmiGm8oUHqvg',
-            },
-            body: JSON.stringify({
-                adminUsername: 'beka_admin',
-                groupID: '830af378-238c-40da-9d4a-8793772f512e',
-                poll: {
-                    question,
-                    options,
-                },
-            }),
-        });
+        const response = await addPoll('beka_admin', '830af378-238c-40da-9d4a-8793772f512e', { question, options });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Poll created successfully:', data);
+        console.log('Poll created successfully:', response.data);
     } catch (error) {
         console.error('Error creating poll:', error);
     } finally {

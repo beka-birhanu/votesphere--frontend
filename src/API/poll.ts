@@ -11,3 +11,10 @@ export async function fetchPolls(groupID: string) {
         throw error;
     }
 }
+
+export async function addPoll(adminUsername: string, groupID: string, poll: { question: string; options: string[] }) {
+    const url = `/polls`;
+    const data = await axios.post(url, { adminUsername, groupID, poll });
+
+    return data;
+}
