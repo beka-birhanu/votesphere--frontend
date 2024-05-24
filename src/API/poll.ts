@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 export async function fetchPolls(groupID: string) {
     try {
         const url = '/polls?' + new URLSearchParams({ groupID });
-        const response = await axios.get(url);
+        const response = await axiosInstance.get(url);
 
         return response.data;
     } catch (error) {
@@ -14,14 +14,14 @@ export async function fetchPolls(groupID: string) {
 
 export async function addPoll(adminUsername: string, groupID: string, poll: { question: string; options: string[] }) {
     const url = `/polls`;
-    const response = await axios.post(url, { adminUsername, groupID, poll });
+    const response = await axiosInstance.post(url, { adminUsername, groupID, poll });
 
     return response.data;
 }
 
 export async function castVote(pollID: string, optionID: string) {
     const url = `/polls/${pollID}/vote` + new URLSearchParams({ optionID });
-    const response = await axios.patch(url);
+    const response = await axiosInstance.patch(url);
 
     return response.data;
 }

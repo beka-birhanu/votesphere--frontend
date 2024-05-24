@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 export async function fetchMembers(groupID: string) {
     try {
         const url = `/groups/${groupID}/members`;
-        const response = await axios.get(url);
+        const response = await axiosInstance.get(url);
 
         return response.data;
     } catch (error) {
@@ -15,5 +15,5 @@ export async function fetchMembers(groupID: string) {
 export async function addMember(username: string, groupID: string) {
     const url = `/groups/${groupID}/members`;
 
-    return axios.post(url, { username });
+    return axiosInstance.post(url, { username });
 }
