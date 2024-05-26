@@ -85,6 +85,8 @@ export async function handleSignUpSubmit(formData: signUpFormData, setSubmitErro
         }
     }
     setSubmitError(errorDetails);
+
+    return response?.isSuccess;
 }
 
 export async function handleSignInSubmit(formData: signInFormData, setSubmitError: CallableFunction, setIsLoading: CallableFunction) {
@@ -115,4 +117,6 @@ export async function handleSignInSubmit(formData: signInFormData, setSubmitErro
         }
     }
     setSubmitError(errorDetails);
+
+    return response?.isSuccess;
 }

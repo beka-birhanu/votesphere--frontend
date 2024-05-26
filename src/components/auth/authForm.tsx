@@ -4,6 +4,7 @@ import { validateEmail, validatePasswordForSignUp, validatePasswordForSignIn, va
 import { useEffect, useState } from 'react';
 import AuthDropDown from './authDropDown';
 import { handleSignInSubmit, handleSignUpSubmit, signUpFormData } from '../../API/authFormSubmitHandlers';
+import { useNavigate } from 'react-router-dom';
 
 type formError = {
     emailInputError: null | string;
@@ -34,6 +35,7 @@ function checkFromValidity(formType: string, formData: signUpFormData, formError
 }
 
 function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunction }) {
+    const navigate = useNavigate();
     const passwordValidator = props.type === 'sign up' ? validatePasswordForSignUp : validatePasswordForSignIn;
 
     const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
@@ -45,6 +47,24 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const [role, setRole] = useState(null);
     const [formHasError, setFormHasError] = useState(true);
     const [submitError, setSubmitError] = useState({ emailError: null, usernameError: null, serverError: null, passwordError: null });
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const formData = { email, username, password, role };
+        let isSuccess;
+
+        if (props.type === 'sign up') {
+            isSuccess = await handleSignUpSubmit(formData, setSubmitError, props.setIsLoading);
+        } else {
+            isSuccess = await handleSignInSubmit(formData, setSubmitError, props.setIsLoading);
+        }
+
+        if (isSuccess) {
+            setSubmitSuccess(true);
+        }
+    }
 
     useEffect(() => {
         const formData = { email, username, password, role };
@@ -55,17 +75,12 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         setSubmitError({ emailError: null, usernameError: null, serverError: null, passwordError: null });
     }, [emailInputError, usernameInputError, passwordInputError, email, username, password, role]);
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-
-        const formData = { email, username, password, role };
-
-        if (props.type === 'sign up') {
-            handleSignUpSubmit(formData, setSubmitError, props.setIsLoading);
-        } else {
-            handleSignInSubmit(formData, setSubmitError, props.setIsLoading);
+    useEffect(() => {
+        if (submitSuccess) {
+            navigate('/dashboard');
         }
-    }
+        console.log(submitSuccess);
+    }, [submitSuccess, navigate]);
 
     const emailInputField = (
         <Input
