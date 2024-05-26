@@ -68,10 +68,11 @@ export async function handleSignUpSubmit(formData: signUpFormData, setSubmitErro
         const { username, groupID, role, accessToken, refreshToken } = response.data as successResponse;
 
         localStorage.setItem('username', username);
-        localStorage.setItem('groupID', groupID === null ? 'null' : groupID.toString());
         localStorage.setItem('role', role);
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+
+        if (groupID) localStorage.setItem('groupID', groupID.toString());
     } else {
         if (response.data && 'message' in response.data) {
             const errorMessage = response.data.message;
@@ -100,10 +101,11 @@ export async function handleSignInSubmit(formData: signInFormData, setSubmitErro
         const { username, groupID, role, accessToken, refreshToken } = response.data as successResponse;
 
         localStorage.setItem('username', username);
-        localStorage.setItem('groupID', groupID === null ? 'null' : groupID.toString());
         localStorage.setItem('role', role);
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+
+        if (groupID) localStorage.setItem('groupID', groupID.toString());
     } else {
         if (response.data && 'message' in response.data) {
             const errorMessage = response.data.message;
