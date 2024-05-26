@@ -3,11 +3,11 @@ import SignIn from './components/auth/signIn';
 import SignUp from './components/auth/signUp';
 import DashBoard from './components/groupDashboard/dashboard';
 import PrivateRoute from './components/route/privateRoute';
+import Home from './components/route/home';
 
 function App() {
     return (
         <Routes>
-            <Route path='/' element={<SignUp />} />
             <Route path='/sign-up' element={<SignUp />} />
             <Route path='/login' element={<SignIn />} />
             <Route
@@ -18,6 +18,7 @@ function App() {
                     </PrivateRoute>
                 }
             />
+            <Route path='/' element={<Home></Home>} />
         </Routes>
     );
 }
