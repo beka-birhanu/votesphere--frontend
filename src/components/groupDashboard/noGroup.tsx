@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import CreateGroupForm from './createGroupFrom';
 
 function NoGroupForNonAdmin() {
     return (
@@ -22,9 +22,6 @@ function NoGroupForNonAdmin() {
 }
 
 function NoGroupFroAdmin() {
-    const [groupName, setGroupName] = useState('');
-    const [groupMotto, setGroupMotto] = useState('');
-
     return (
         <div
             className='flex w-full m-8
@@ -32,6 +29,7 @@ function NoGroupFroAdmin() {
         >
             <div className='flex flex-col items-center gap-16 w-full'>
                 <h1 className='text-center text-4xl text-gray-300 font-bold'> Create Group!</h1>
+                <CreateGroupForm></CreateGroupForm>
                 <p className='text-left text-2xl max-w-4xl'>
                     <strong className='font-normal'>
                         <span className='font-semibold'>Please note</span>: You can only create one group.
