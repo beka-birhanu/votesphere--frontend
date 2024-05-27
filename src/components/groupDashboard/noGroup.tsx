@@ -1,4 +1,4 @@
-import CreateGroupForm from './createGroupFrom';
+import CreateGroupForm from './createGroupForm';
 
 function NoGroupForNonAdmin() {
     return (
