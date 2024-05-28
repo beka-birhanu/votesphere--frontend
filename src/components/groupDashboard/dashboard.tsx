@@ -39,8 +39,8 @@ function DashBoard() {
     useEffect(() => {
         const getMembers = async (groupID: string) => {
             try {
-                const data = await fetchMembers(groupID);
-                setMembers(data);
+                const response = await fetchMembers(groupID);
+                setMembers(response.data);
             } catch (error) {}
             navigate('/login');
         };
