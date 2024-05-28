@@ -6,7 +6,7 @@ import Header from '../header/header';
 import PollList from './poll/pollList';
 import DoubleArrowIcon from './icons/doubleArrowSVG';
 import { fetchPolls } from '../../API/poll';
-import { fetchMembers } from '../../API/members';
+import { fetchMembers } from '../../API/group';
 import { useNavigate } from 'react-router-dom';
 import NoGroup from './noGroup';
 

@@ -3,7 +3,7 @@ import useInput from '../../../hooks/use-input';
 import Input from '../../auth/authInput';
 import { validateUsername } from '../../auth/validators';
 import LoadingSVG from '../icons/loadingSVG';
-import { addMember } from '../../../API/members';
+import { addMember } from '../../../API/group';
 import axios from 'axios';
 import { UserDataContext } from '../dashboard';
 
