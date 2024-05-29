@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import useInput from '../../../hooks/use-input';
 import Input from '../../auth/authInput';
 import { validateUsername } from '../../auth/validators';
@@ -42,6 +42,7 @@ function AddMemberForm(props: { onClose: CallableFunction }) {
         useInput(validateUsername);
     const [isLoading, setIsLoading] = useState(false);
     const [submitError, setSubmitError] = useState(null);
+    const [isFormValid, setIsFormValid] = useState(false);
 
     const { groupID } = useContext(UserDataContext);
 
@@ -55,6 +56,13 @@ function AddMemberForm(props: { onClose: CallableFunction }) {
             isTouched={isUsernameInputTouched}
         ></Input>
     );
+
+    useEffect(() => {
+        const isUsernameEmpty = username === null || username === '';
+        setSubmitError(null);
+
+        setIsFormValid(!isUsernameEmpty);
+    });
 
     function handleClose(event: React.MouseEvent<HTMLElement>) {
         props.onClose();
@@ -74,7 +82,10 @@ function AddMemberForm(props: { onClose: CallableFunction }) {
             <div className='max-w-3xl w-full rounded-xl sm:p-12 p-6 grid gap-16 bg-white relative' onClick={(event) => event.stopPropagation()}>
                 <form action='' className='grid gap-12 w-full' onSubmit={handleSubmit}>
                     {usernameInputField}
-                    <button className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500 flex justify-center gap-2 items-center'>
+                    <button
+                        disabled={!isFormValid}
+                        className='rounded-lg bg-blue-700 py-3 text-blue-50 shadow-sm text-2xl disabled:bg-gray-500 flex justify-center gap-2 items-center'
+                    >
                         {isLoading && <LoadingSVG></LoadingSVG>}
                         {isLoading ? 'Adding' : 'Add'}
                     </button>
