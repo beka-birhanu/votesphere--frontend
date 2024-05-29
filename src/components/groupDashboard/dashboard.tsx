@@ -78,7 +78,7 @@ function DashBoard() {
                         </div>
                     </Fragment>
                 )}
-                <NoGroup isAdmin={true}></NoGroup>
+                {username && !groupID && <NoGroup isAdmin={true} username={username}></NoGroup>}
             </main>
         </Fragment>
     );
