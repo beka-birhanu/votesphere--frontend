@@ -19,14 +19,14 @@ function checkFromValidity(formType: string, formData: signUpFormData, formError
     const isEmailEmpty = email === null || email === '';
     const isUsernameEmpty = username === null || username === '';
     const isPasswordEmpty = password === null || password === '';
-    const isRollEmpty = role === null || role == '';
+    const isRoleEmpty = role === null || role == '';
 
     let atLeastOneError;
     let atLeastOneEmpty;
 
     if (formType === 'sign up') {
         atLeastOneError = emailInputError !== null || usernameInputError !== null || passwordInputError !== null;
-        atLeastOneEmpty = isEmailEmpty || isUsernameEmpty || isPasswordEmpty || isRollEmpty;
+        atLeastOneEmpty = isEmailEmpty || isUsernameEmpty || isPasswordEmpty || isRoleEmpty;
     } else if (formType === 'login') {
         atLeastOneError = usernameInputError !== null || passwordInputError !== null;
         atLeastOneEmpty = isUsernameEmpty || isPasswordEmpty;
