@@ -52,7 +52,7 @@ function PollListItem(props: { pollData: pollData; key: string }) {
 
     async function handleVote(optionID: string) {
         try {
-            const updatedData: pollData = await castVote(props.pollData.id, optionID);
+            const updatedData: pollData = (await castVote(props.pollData.id, optionID)).data;
 
             setHasVoted(true);
             setChosenOptionId(updatedData.chosenOptionId);

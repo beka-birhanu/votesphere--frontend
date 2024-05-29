@@ -26,8 +26,8 @@ function DashBoard() {
     useEffect(() => {
         const getPolls = async (groupID: string) => {
             try {
-                const data = await fetchPolls(groupID);
-                setPollsData(data);
+                const polls = (await fetchPolls(groupID)).data;
+                setPollsData(polls);
             } catch (error) {
                 navigate('/login');
             }
@@ -39,10 +39,11 @@ function DashBoard() {
     useEffect(() => {
         const getMembers = async (groupID: string) => {
             try {
-                const response = await fetchMembers(groupID);
-                setMembers(response.data);
-            } catch (error) {}
-            navigate('/login');
+                const members = (await fetchMembers(groupID)).data;
+                setMembers(members);
+            } catch (error) {
+                navigate('/login');
+            }
         };
 
         if (groupID) getMembers(groupID);
