@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import PollOption from './option';
 import ToggleAccordionIcon from '../icons/toggleAccordionIcon';
+import { castVote } from '../../../API/poll';
 
 export type pollData = {
     id: string;
     chosenOptionId: string | null;
     question: string;
-    options: { optionText: string; voteCount: number; id: string }[];
+    options: { optionText: string; numberOfVotes: number; id: string }[];
     hasVoted: boolean;
     isClosed: boolean;
 };
@@ -24,12 +25,11 @@ function PollListItem(props: { pollData: pollData; key: string }) {
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const iconColor = hasVoted || isClosed ? 'bg-[#ABACAD]' : 'bg-blue-700';
 
-    const totalVoteCount = props.pollData.options.reduce((accumulator, option) => accumulator + option.voteCount, 0);
-
+    const totalVoteCount = optionsData.reduce((accumulator, option) => accumulator + option.numberOfVotes, 0);
     const optionsWithPercent = optionsData.map((option) => ({
         id: option.id,
         optionText: option.optionText,
-        votePercent: (option.voteCount / totalVoteCount) * 100,
+        votePercent: (option.numberOfVotes / totalVoteCount) * 100,
     }));
 
     const question = <h1 className='font-medium mx-2'>{props.pollData.question}</h1>;
@@ -38,10 +38,7 @@ function PollListItem(props: { pollData: pollData; key: string }) {
             data={optionData}
             displayVotePercent={hasVoted || isClosed}
             isChosen={chosenOptionId === optionData.id}
-            setHasVoted={setHasVoted}
-            setIsClosed={setIsClosed}
-            setOptionsData={setOptionsData}
-            setChosenOptionId={setChosenOptionId}
+            onVote={handleVote}
         ></PollOption>
     ));
 
@@ -52,6 +49,19 @@ function PollListItem(props: { pollData: pollData; key: string }) {
             <ToggleAccordionIcon iconDirection={iconDirection}></ToggleAccordionIcon>{' '}
         </button>
     );
+
+    async function handleVote(optionID: string) {
+        try {
+            const updatedData: pollData = await castVote(props.pollData.id, optionID);
+
+            setHasVoted(true);
+            setChosenOptionId(updatedData.chosenOptionId);
+            setIsClosed(updatedData.isClosed);
+            setOptionsData(updatedData.options);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <section className='max-w-4xl w-full flex flex-col gap-5' key={props.key}>

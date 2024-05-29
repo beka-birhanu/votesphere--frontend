@@ -9,27 +9,14 @@ const chosenMark = (
     </div>
 );
 
-function PollOption(props: {
-    data: optionData;
-    displayVotePercent: boolean;
-    isChosen: boolean;
-    setHasVoted: CallableFunction;
-    setIsClosed: CallableFunction;
-    setOptionsData: CallableFunction;
-    setChosenOptionId: CallableFunction;
-}) {
+function PollOption(props: { data: optionData; displayVotePercent: boolean; isChosen: boolean; onVote: CallableFunction }) {
     const chooseButton = <div className='w-6 h-6 rounded-full border-2' onClick={handleVote}></div>;
     const barWidth = Math.round(props.data.votePercent);
     const votePercentBar = <div style={{ width: `${barWidth}%` }} className='h-[5px] bg-blue-500 rounded-full ml-1`} ' />;
 
     async function handleVote(event: React.MouseEvent<HTMLElement>) {
         try {
-            const updatedPoll: pollData = await castVote(props.data.id, props.data.id);
-
-            props.setOptionsData(updatedPoll.options);
-            props.setHasVoted(true);
-            props.setIsClosed(false);
-            props.setChosenOptionId(props.data.id);
+            props.onVote(props.data.id);
         } catch (error) {
             console.log(error);
         }
