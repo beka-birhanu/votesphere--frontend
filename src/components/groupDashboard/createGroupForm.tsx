@@ -1,5 +1,7 @@
-import { MouseEventHandler, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingSVG from './icons/loadingSVG';
+import { createGroup } from '../../API/group';
+import { useNavigate } from 'react-router-dom';
 
 function CreateGroupInput(props: { label: string; onChange: CallableFunction; value: string }) {
     return (
@@ -21,13 +23,13 @@ function CreateGroupInput(props: { label: string; onChange: CallableFunction; va
     );
 }
 
-async function submit(groupName: string, setIsLoading: CallableFunction) {
+async function submit(username: string, groupName: string, setIsLoading: CallableFunction) {
     setIsLoading(true);
 
     try {
-        // const response = await addPoll(adminUsername, groupID, poll);
+        const response = await createGroup(username, groupName);
 
-        console.log('Poll created successfully:' /*response.data*/);
+        return response.data;
     } catch (error) {
         console.error('Error creating poll:', error);
     } finally {
@@ -35,7 +37,9 @@ async function submit(groupName: string, setIsLoading: CallableFunction) {
     }
 }
 
-function CreateGroupForm() {
+function CreateGroupForm(props: { username: string }) {
+    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [groupName, setGroupName] = useState('');
@@ -48,13 +52,17 @@ function CreateGroupForm() {
         setCanSubmit(isRequirementFulfilled);
     }, [groupName]);
 
-    function handleSubmit(event: React.FormEvent<HTMLElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLElement>) {
         event.preventDefault();
         if (!canSubmit) {
             return null;
         }
 
-        submit(groupName, setIsLoading);
+        const { groupID } = await submit(props.username, groupName, setIsLoading);
+        localStorage.setItem('groupID', groupID);
+        localStorage.setItem('groupName', groupName);
+
+        navigate('/dashboard');
     }
 
     return (
