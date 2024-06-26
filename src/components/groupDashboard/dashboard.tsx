@@ -19,6 +19,7 @@ function DashBoard() {
 
     const groupID = localStorage.getItem('groupID');
     const username = localStorage.getItem('username');
+    const role = localStorage.getItem('role');
 
     const [pollsData, setPollsData] = useState<pollData[] | null>(null);
     const [members, setMembers] = useState<memberData[] | null>(null);
@@ -86,7 +87,7 @@ function DashBoard() {
                         </div>
                     </Fragment>
                 )}
-                {username && !groupID && <NoGroup isAdmin={true} username={username}></NoGroup>}
+                {username && !groupID && <NoGroup isAdmin={role === 'Admin'} username={username}></NoGroup>}
             </main>
         </Fragment>
     );
