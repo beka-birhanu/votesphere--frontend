@@ -38,11 +38,9 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
     const navigate = useNavigate();
     const passwordValidator = props.type === 'sign up' ? validatePasswordForSignUp : validatePasswordForSignIn;
 
-    const [email, isEmailInputTouched, emailInputError, setEmail, emailInputBlurHandler, emailInputResetHandler] = useInput(validateEmail);
-    const [username, isUsernameInputTouched, usernameInputError, setUsername, usernameInputBlurHandler, usernameInputResetHandler] =
-        useInput(validateUsername);
-    const [password, isPasswordInputTouched, passwordInputError, setPassword, passwordInputBlurHandler, passwordInputResetHandler] =
-        useInput(passwordValidator);
+    const [email, isEmailInputTouched, emailInputError, setEmail, blurEmailInput, resetEmailInput] = useInput(validateEmail);
+    const [username, isUsernameInputTouched, usernameInputError, setUsername, blurUsernameInputBlur, resetUsernameInput] = useInput(validateUsername);
+    const [password, isPasswordInputTouched, passwordInputError, setPassword, blurPasswordInput, resetPasswordInput] = useInput(passwordValidator);
 
     const [role, setRole] = useState(null);
     const [formHasError, setFormHasError] = useState(true);
@@ -77,6 +75,10 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
 
     useEffect(() => {
         if (submitSuccess) {
+            resetEmailInput();
+            resetPasswordInput();
+            resetUsernameInput();
+
             navigate('/dashboard');
         }
     }, [submitSuccess, navigate]);
@@ -85,7 +87,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         <Input
             type='email'
             onChange={setEmail}
-            onBlur={emailInputBlurHandler}
+            onBlur={blurEmailInput}
             value={email}
             error={emailInputError ? emailInputError : submitError.emailError}
             isTouched={isEmailInputTouched}
@@ -96,7 +98,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         <Input
             type='username'
             onChange={setUsername}
-            onBlur={usernameInputBlurHandler}
+            onBlur={blurUsernameInputBlur}
             value={username}
             error={usernameInputError ? usernameInputError : submitError.usernameError}
             isTouched={isUsernameInputTouched}
@@ -107,7 +109,7 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         <Input
             type='password'
             onChange={setPassword}
-            onBlur={passwordInputBlurHandler}
+            onBlur={blurPasswordInput}
             value={password}
             error={passwordInputError ? usernameInputError : submitError.passwordError}
             isTouched={isPasswordInputTouched}
