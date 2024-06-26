@@ -23,6 +23,8 @@ function DashBoard() {
     const [pollsData, setPollsData] = useState<pollData[] | null>(null);
     const [members, setMembers] = useState<memberData[] | null>(null);
 
+    const [showMembers, setShowMembers] = useState<boolean>(false);
+
     useEffect(() => {
         const getPolls = async (groupID: string) => {
             try {
@@ -52,7 +54,7 @@ function DashBoard() {
     return (
         <Fragment>
             <Header isAuthorized={true} isLoading={false}></Header>
-            <main className='mt-32'>
+            <main className='my-32'>
                 {username && groupID && (
                     <Fragment>
                         <hgroup className='flex flex-col gap-6 items-center md:mb-16 mb-10'>
@@ -68,12 +70,17 @@ function DashBoard() {
 
                                 <aside className='min-w-72 absolute z-10 bg-white right-0 lg:mr-16'>
                                     <div className='flex items-center gap-2 ml-3'>
-                                        <button className='flex gap-0'>
-                                            <DoubleArrowIcon />
+                                        <button
+                                            className='flex gap-0'
+                                            onClick={() => {
+                                                setShowMembers((showMembers) => !showMembers);
+                                            }}
+                                        >
+                                            <DoubleArrowIcon rotate = {showMembers} />
                                         </button>
                                         <h1>Members</h1>
                                     </div>
-                                    <MembersList members={members} />
+                                    {showMembers && <MembersList members={members} />}
                                 </aside>
                             </UserDataContext.Provider>
                         </div>
