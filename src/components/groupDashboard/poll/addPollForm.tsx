@@ -6,11 +6,18 @@ import { UserDataContext } from '../dashboard';
 
 const MAX_INPUT_SIZE = 6;
 
-async function submit(poll: { question: string; options: string[] }, groupID: string, adminUsername: string, setIsLoading: CallableFunction) {
+async function submit(
+    poll: { question: string; options: string[] },
+    groupID: string,
+    adminUsername: string,
+    setIsLoading: CallableFunction,
+    closeForm: CallableFunction,
+) {
     setIsLoading(true);
 
     try {
         const response = await addPoll(adminUsername, groupID, poll);
+        closeForm();
 
         console.log('Poll created successfully:', response.data);
     } catch (error) {
@@ -81,7 +88,7 @@ function AddPollForm(props: { onClose: MouseEventHandler<HTMLElement> }) {
             optionInputsData.push(option6);
         }
 
-        submit({ question, options: optionInputsData }, groupID, username, setIsLoading);
+        submit({ question, options: optionInputsData }, groupID, username, setIsLoading, props.onClose);
     }
 
     return (
