@@ -79,7 +79,6 @@ function AuthForm(props: { type: 'login' | 'sign up'; setIsLoading: CallableFunc
         if (submitSuccess) {
             navigate('/dashboard');
         }
-        console.log(submitSuccess);
     }, [submitSuccess, navigate]);
 
     const emailInputField = (
