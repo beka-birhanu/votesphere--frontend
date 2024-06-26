@@ -81,7 +81,7 @@ function DashBoard() {
                                         </button>
                                         <h1>Members</h1>
                                     </div>
-                                    {showMembers && <MembersList members={members} />}
+                                    {showMembers && <MembersList members={members} isAdmin={role === 'Admin'} />}
                                 </aside>
                             </UserDataContext.Provider>
                         </div>

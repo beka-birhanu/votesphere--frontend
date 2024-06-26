@@ -62,7 +62,7 @@ function AddMemberForm(props: { onClose: CallableFunction }) {
         setSubmitError(null);
 
         setIsFormValid(!isUsernameEmpty);
-    });
+    }, [username]);
 
     function handleClose(event: React.MouseEvent<HTMLElement>) {
         props.onClose();

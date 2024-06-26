@@ -23,7 +23,7 @@ function putAdminFirst(members: memberData[]): void {
     }
 }
 
-function MembersList(props: { members: memberData[] | null }) {
+function MembersList(props: { members: memberData[] | null, isAdmin: boolean }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     let content: JSX.Element = noContent;
@@ -56,7 +56,7 @@ function MembersList(props: { members: memberData[] | null }) {
     return (
         <div className='shadow-lg rounded-xl px-12 py-6 mt-6 max-h-[100vh] overflow-y-scroll'>
             {content}
-            {addMemberButton}
+            {props.isAdmin && addMemberButton}
             {isModalOpen &&
                 createPortal(<AddMemberForm onClose={toggleAddMemberForm}></AddMemberForm>, document.getElementById('modal-root') as HTMLElement)}
         </div>
