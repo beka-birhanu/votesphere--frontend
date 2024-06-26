@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const UNAUTHORIZED = 401;
-const NETWORK_ERROR = 'Network Error';
+const SERVER_ERROR_START = 500;
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:9000',
@@ -49,7 +49,7 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
 
         // Check for network error
-        if (!error.response) {
+        if (!error.response || error.response.status === SERVER_ERROR_START) {
             console.error('Network error:', error);
             localStorage.setItem('previousURL', window.location.pathname + window.location.search);
             window.location.href = '/network-error'; // Redirect to fault page
