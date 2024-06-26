@@ -12,9 +12,8 @@ function Header(props: { isAuthorized: boolean; isLoading: boolean }) {
     );
     const navigate = useNavigate();
 
-    function logout() {
-        handleSignOut();
-        navigate('/login');
+    async function logout() {
+        if (await handleSignOut()) navigate('/login');
     }
 
     return (

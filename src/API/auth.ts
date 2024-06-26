@@ -131,8 +131,9 @@ export async function handleSignOut() {
 
     try {
         const response = await axiosInstance.patch(url);
-        itemsToRemove.forEach((item) => localStorage.removeItem(item));
-        
+
+        if (response) itemsToRemove.forEach((item) => localStorage.removeItem(item));
+
         return response;
     } catch (error) {
         console.error('Error during sign out:', error);

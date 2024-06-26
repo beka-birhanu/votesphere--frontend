@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const UNAUTHORIZED = 401;
+const NETWORK_ERROR = 'Network Error';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:9000',
@@ -8,6 +9,7 @@ const axiosInstance = axios.create({
         'Content-Type': 'application/json',
     },
 });
+
 async function refreshAccessToken() {
     const refreshToken = localStorage.getItem('refreshToken');
 
@@ -20,10 +22,12 @@ async function refreshAccessToken() {
 
         const { newAccessToken } = response.data;
         localStorage.setItem('accessToken', newAccessToken);
+        return newAccessToken; // Return the new access token
     } catch (error) {
         throw error;
     }
 }
+
 axiosInstance.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem('accessToken');
@@ -35,7 +39,7 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
-        Promise.reject(error);
+        return Promise.reject(error);
     },
 );
 
@@ -44,19 +48,29 @@ axiosInstance.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
+        // Check for network error
+        if (!error.response) {
+            console.error('Network error:', error);
+            localStorage.setItem('previousURL', window.location.pathname + window.location.search);
+            window.location.href = '/network-error'; // Redirect to fault page
+            return;
+        }
+
+        // Handle unauthorized error
         if (error.response.status === UNAUTHORIZED && !originalRequest._retry) {
             originalRequest._retry = true;
 
             try {
-                const newAccessToken = refreshAccessToken();
+                const newAccessToken = await refreshAccessToken();
                 axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-                originalRequest.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 return Promise.reject(refreshError);
             }
         }
+
         return Promise.reject(error);
     },
 );
