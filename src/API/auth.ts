@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 type successResponse = {
     username: string;
@@ -121,4 +122,20 @@ export async function handleSignInSubmit(formData: signInFormData, setSubmitErro
     setSubmitError(errorDetails);
 
     return response?.isSuccess;
+}
+
+export async function handleSignOut() {
+    const url = '/auth/signout';
+
+    const itemsToRemove = ['username', 'role', 'accessToken', 'refreshToken', 'groupID'];
+
+    try {
+        const response = await axiosInstance.patch(url);
+        itemsToRemove.forEach((item) => localStorage.removeItem(item));
+        
+        return response;
+    } catch (error) {
+        console.error('Error during sign out:', error);
+        throw error; // Re-throw the error after logging it
+    }
 }
