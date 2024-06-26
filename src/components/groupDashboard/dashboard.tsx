@@ -36,7 +36,7 @@ function DashBoard() {
         };
 
         if (groupID) getPolls(groupID);
-    }, []);
+    }, [groupID, navigate]);
 
     useEffect(() => {
         const getMembers = async (groupID: string) => {
@@ -49,7 +49,7 @@ function DashBoard() {
         };
 
         if (groupID) getMembers(groupID);
-    }, []);
+    }, [groupID, navigate]);
 
     return (
         <Fragment>
@@ -76,7 +76,7 @@ function DashBoard() {
                                                 setShowMembers((showMembers) => !showMembers);
                                             }}
                                         >
-                                            <DoubleArrowIcon rotate = {showMembers} />
+                                            <DoubleArrowIcon rotate={showMembers} />
                                         </button>
                                         <h1>Members</h1>
                                     </div>
