@@ -1,6 +1,6 @@
 import '../../index.css';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../logo.jpg';
+import logo from '../../logo.png';
 import { handleSignOut } from '../../API/auth';
 
 function Header(props: { isAuthorized: boolean; isLoading: boolean }) {
