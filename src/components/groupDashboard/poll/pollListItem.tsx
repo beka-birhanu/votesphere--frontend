@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PollOption from './option';
+import { optionData } from './option';
 import ToggleAccordionIcon from '../icons/toggleAccordionIcon';
 import { castVote } from '../../../API/poll';
 
@@ -11,6 +12,10 @@ export type pollData = {
     hasVoted: boolean;
     isClosed: boolean;
 };
+
+function preparePollsData(optionData: optionData[]) {
+    optionData.sort((a, b) => b.id.localeCompare(a.id));
+}
 
 function PollListItem(props: { pollData: pollData; key: string }) {
     function toggleAccordion() {
@@ -33,6 +38,8 @@ function PollListItem(props: { pollData: pollData; key: string }) {
     }));
 
     const question = <h1 className='font-medium mx-2'>{props.pollData.question}</h1>;
+
+    preparePollsData(optionsWithPercent);
     const options = optionsWithPercent.map((optionData) => (
         <PollOption
             data={optionData}

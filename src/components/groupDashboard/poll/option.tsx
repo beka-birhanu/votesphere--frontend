@@ -1,7 +1,4 @@
-import { castVote } from '../../../API/poll';
-import { pollData } from './pollListItem';
-
-type optionData = { id: string; optionText: string; votePercent: number };
+export type optionData = { id: string; optionText: string; votePercent: number };
 
 const chosenMark = (
     <div className='rounded-full bg-blue-700 w-4 h-4 p-[1px] flex justify-center items-center'>
