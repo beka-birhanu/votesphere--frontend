@@ -9,6 +9,15 @@ const noContent = (
     </div>
 );
 
+function sortPollsByVotedStatusLast(poll: pollData): string {
+    // Prefixing with '1-' or '0-' to ensure 'voted' polls come last
+    return `${poll.hasVoted ? '0-' : '1-'}` + poll.id;
+}
+
+function preparePollsData(pollsData: pollData[] | null) {
+    if (pollsData) pollsData.sort((a, b) => sortPollsByVotedStatusLast(b).localeCompare(sortPollsByVotedStatusLast(a)));
+}
+
 function PollList(props: { pollsData: pollData[] | null }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,6 +37,7 @@ function PollList(props: { pollsData: pollData[] | null }) {
         </button>
     );
 
+    preparePollsData(props.pollsData);
     const content = props.pollsData
         ? props.pollsData.map((pollData) => <PollListItem key={pollData.id} pollData={pollData}></PollListItem>)
         : noContent;
